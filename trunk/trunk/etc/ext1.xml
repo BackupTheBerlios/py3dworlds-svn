@@ -1,0 +1,38 @@
+<database>
+
+
+  <nameOfDatabase>griddata</nameOfDatabase>
+  
+  <author>Hamel</author>
+  <plugin>Standard</plugin>
+  
+  <table>
+    <nameOfTable>xmlvalues</nameOfTable>
+    <x>22</x>
+    <y>35</y>
+    
+    
+    
+    <field>
+      <name>name</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>50</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    
+    
+  </table>
+  
+  
+    
+     
+   
+   
+</database>
+
+    

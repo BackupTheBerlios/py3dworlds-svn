@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Session SYSTEM "Session-4.3.dtd">
+<!-- eric4 session file for project Py3D-Worlds -->
+<!-- This file was generated automatically, do not edit. -->
+<!-- Saved: 2010-01-05, 11:07:13 -->
+<Session version="4.3">
+  <Filenames>
+    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/GridServer.py</Filename>
+    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/DB_Com_server.py</Filename>
+    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/login.py</Filename>
+  </Filenames>
+  <ActiveWindow cline="0" cindex="0">/home/jhamel/Projekte/Py3D_worlds/trunk/DB_Com_server.py</ActiveWindow>
+  <Breakpoints>
+  </Breakpoints>
+  <Watchexpressions>
+  </Watchexpressions>
+  <DebugInfo>
+    <CommandLine></CommandLine>
+    <WorkingDirectory></WorkingDirectory>
+    <Environment></Environment>
+    <ReportExceptions value="True" />
+    <Exceptions>
+    </Exceptions>
+    <IgnoredExceptions>
+    </IgnoredExceptions>
+    <AutoClearShell value="True" />
+    <TracePython value="False" />
+    <AutoContinue value="True" />
+    <CovexcPattern></CovexcPattern>
+  </DebugInfo>
+  <Bookmarks>
+  </Bookmarks>
+</Session>

@@ -1,0 +1,169 @@
+# coding=utf-8
+from twisted.web import xmlrpc
+from databases.basics import basics
+import databases.DB_Com
+import uuid
+from xmlrpc.xmlrpc import myXmlRpc
+
+class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
+    def __init__(self):
+        xmlrpc.XMLRPC.__init__(self)
+        basics.__init__(self)
+        self.db_com = databases.DB_Com.DB_Com()
+        myXmlRpc.__init__(self)
+        self.dicExpectUser = {}
+        
+        self.defaultUser  = { 'last_name': 'Tairov', 'sim_ip':'85.214.139.187', 'start_location':"last" ,  'seconds_since_epoch': 20000, 'message':'Monday', 'first_name':'Juergen', 'circuit_code':3,  'sim_port':9300,'secure_session_id':'uuid333', 'look_at ':[1.0, 1.0, 1.0],  'agent_id':'aaabb-33dsd-seee', 'inventory_host':'localhost', 'region_y':0.0, 'region_x':0.0, 'seed_capability':'<llsd><map><key>request1</key><string>Capability1</string><key>request2</key><string>Capability2</string</map></llsd> ', 'agent_access': '0', 'session_id': 'aaddss-wewew-33222', 'login': 'true'} 
+        
+        
+# 
+#+-------------------+---------------------+------+-----+--------------------------------------+-------+
+#| Field             | Type                | Null | Key | Default                              | Extra |
+#+-------------------+---------------------+------+-----+--------------------------------------+-------+
+#| UUID              | varchar(36)         | NO   | PRI |                                      |       | 
+#| username          | varchar(32)         | NO   | MUL | NULL                                 |       | 
+#| lastname          | varchar(32)         | NO   |     | NULL                                 |       | 
+#| passwordHash      | varchar(32)         | NO   |     | NULL                                 |       | 
+#| passwordSalt      | varchar(32)         | NO   |     | NULL                                 |       | 
+#| homeRegion        | bigint(20) unsigned | YES  |     | NULL                                 |       | 
+#| homeLocationX     | float               | YES  |     | NULL                                 |       | 
+#| homeLocationY     | float               | YES  |     | NULL                                 |       | 
+#| homeLocationZ     | float               | YES  |     | NULL                                 |       | 
+#| homeLookAtX       | float               | YES  |     | NULL                                 |       | 
+#| homeLookAtY       | float               | YES  |     | NULL                                 |       | 
+#| homeLookAtZ       | float               | YES  |     | NULL                                 |       | 
+#| created           | int(11)             | NO   |     | NULL                                 |       | 
+#| lastLogin         | int(11)             | NO   |     | NULL                                 |       | 
+#| userInventoryURI  | varchar(255)        | YES  |     | NULL                                 |       | 
+#| userAssetURI      | varchar(255)        | YES  |     | NULL                                 |       | 
+#| profileCanDoMask  | int(10) unsigned    | YES  |     | NULL                                 |       | 
+#| profileWantDoMask | int(10) unsigned    | YES  |     | NULL                                 |       | 
+#| profileAboutText  | text                | YES  |     | NULL                                 |       | 
+#| profileFirstText  | text                | YES  |     | NULL                                 |       | 
+#| profileImage      | varchar(36)         | YES  |     | NULL                                 |       | 
+#| profileFirstImage | varchar(36)         | YES  |     | NULL                                 |       | 
+#| webLoginKey       | varchar(36)         | YES  |     | NULL                                 |       | 
+#| homeRegionID      | char(36)            | NO   |     | 00000000-0000-0000-0000-000000000000 |       | 
+#| userFlags         | int(11)             | NO   |     | 0                                    |       | 
+#| godLevel          | int(11)             | NO   |     | 0                                    |       | 
+#| customType        | varchar(32)         | NO   |     |                                      |       | 
+#| partner           | char(36)            | NO   |     | 00000000-0000-0000-0000-000000000000 |       | 
+#| email             | varchar(250)        | YES  |     | NULL                                 |       | 
+#| scopeID           | char(36)            | NO   |     | 00000000-0000-0000-0000-000000000000 |       | 
+#+-------------------+---------------------+------+-----+--------------------------------------+-------+ '''
+
+
+   
+  
+    def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
+        sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
+        sSql += "  '{ region_handle: [' || '2562560,2561536' || '] , position: [' || to_char(users.homelocationx,'000.999999') "
+        sSql += " || ', ' || to_char(users.homelocationy,'000.999999') || ', ' || to_char(users.homelocationz,'000.999999') || '] ,  look_at: ['"
+        sSql += " || to_char(users.homelookatx,'000.999999') "
+        sSql += " || ', ' ||  to_char(users.homelookaty,'000.999999') || ', ' || to_char(users.homelookatz,'000.999999') || '] }'  as home, "
+        sSql += " '[1, 0, 0]' as look_at , 'A' as agent_access_max,  regions.serveruri as serveruri, "
+        sSql += " '2562560' as region_x,  '2561536' as region_y, 1546967460 as circuit_code,  "
+        sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
+        sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
+        sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
+        
+        sSql += " agents.securesessionid as secure_session_id,  agents.sessionid as session_id "
+        sSql += " from users , regions, agents where users.username = '" + sUsername + "' and users.lastname = '" + sLastname + "' "
+        sSql +=  " and agents.uuid = users.uuid and agents.currentregion = regions.uuid "
+        
+        #sSql = "select * from agents where uuid = '" + result[0]['uuid'] + "' "
+        
+            
+        #sSql = "select * from regions where uuid = '" + result[0]['currentregion'] + "' "
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        #print result3
+        print '###################  regions #####'
+    
+        #dicUser = result[0]
+        
+            
+        #self.server = 'http://' + dicUser['serverip'] + ':' + dicUser['serverhttpport']
+        #self.callRP('expect_user',  )
+        #inform the sim with expect_user
+        print result[0]
+        return result[0]
+    def xmlrpc_login_to_simulator(self, args):
+        print "Incoming --> ",   args
+        dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
+        if dicResult not in ['NONE', 'ERROR']:
+            dicResult = self.informSim(dicResult)
+            
+        return dicResult
+    def informSim(self,  dicResult):
+        #self.server = dicResult['serveruri']
+        dicSimUser = {}
+        self.server = 'http://cuonsim1.de:9300/'
+        # defaults for testing
+        dicSimUser['circuit_code'] = 105842181
+        dicSimUser['regionhandle'] = "11006111396599296"
+        dicSimUser['lastname'] = dicResult['last_name']
+        dicSimUser['firstname'] = dicResult['first_name']
+        dicSimUser['secure_session_id'] = dicResult['secure_session_id']
+        dicSimUser['session_id'] = dicResult['session_id']
+        dicSimUser['startpos_x'] = '20'
+        dicSimUser['startpos_y'] = '20'
+        dicSimUser['startpos_z'] = '40'
+        dicSimUser['caps_path']= '0e99f86e-9dce-425b-a536-0834ed61ef6a'
+        dicSimUser['region_x'] = `dicResult['region_x']`
+        dicSimUser['region_y'] = `dicResult['region_y']`
+        dicSimUser['folder_id'] = '3e1a8134-f9d7-40a1-9a01-7fff99ac8536'
+        dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
+        dicSimUser['body_asset'] = '41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1'
+        dicSimUser['shirt_item'] = '77c41e39-38f9-f75a-0000-585989bf0000'
+        
+        answer = self.callRP('expect_user',  dicSimUser)
+        print 'answer from sim:',  answer
+        
+        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + '0e99f86e-9dce-425b-a536-0834ed61ef6a' +'0000/'
+
+        return dicResult
+        
+        
+        
+    def xmlrpc_get_user_by_uuid(self, args):
+        print 'get_user_by_uuid ',  args
+        # response >custom_type profile_want_do  home_region_id >profile_created >profile_image >home_coordinates_x  profile_firstlife_image home_coordinates_y home_coordinates_z >server_asset home_look_x 
+        sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, regions.uuid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
+        sSql += " profileImage as profile_image ,  to_char(homelocationx,'FM990.99999') as  home_coordinates_x,  to_char(homelocationy,'FM990.99999') as  home_coordinates_y,  to_char(homelocationz,'FM990.99999') as  home_coordinates_z, "
+        sSql += " users.partner,  '' as server_asset,  to_char(profileCanDoMask,'FM99999999990') as profile_can_do,  users.uuid as uuid ,  users.username as firstname,  "
+        sSql += " to_char(godlevel,'FM999990') as god_level, '' as   server_inventory,  to_char(userflags,'FM9999999999990') as user_flags,  profileabouttext as profile_about ,  "
+        sSql += "to_char(homeregion,'FM9999999999999999990') as home_region,  profilefirsttext as profile_firstlife_about , "
+        sSql += " to_char(homelookatx,'FM990.99999') as home_look_x, to_char(homelookaty,'FM990.99999') as home_look_y, to_char(homelookatz,'FM990.99999') as home_look_z "
+        sSql += " from users,  regions where users.uuid = '" + args['avatar_uuid'] + "' and regions.regionhandle = users.homeregion"
+        dicUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+        print dicUser
+        dicUser['custom_type'] = ' '
+        for key in dicUser:
+            try:
+                #very dirty
+                print dicUser[key]
+                dicUser[key] = dicUser[key].strip()
+            except:
+                pass
+        print 'after strip ',  dicUser        
+        return dicUser
+        
+    def xmlrpc_update_avatar_appearance(self, args):
+        print 'update_avatar_appearance ',  args 
+         
+    def xmlrpc_check_auth_session(self, args):
+        print 'check_auth_session ',  args
+        
+        #session_id, avatar_uuid
+        
+        dicSession = {'auth_session':'TRUE'}
+        return dicSession
+        
+
+    def xmlrpc_get_agent_by_uuid(self, args):
+        print 'get_agent_by_uuid ',  args
+        
+        
+    def getNewUUID(self):  
+       
+        return str(uuid.uuid4())
