@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-4.6.dtd">
+<!-- eric4 project file for project Py3D-Worlds -->
+<!-- Saved: 2010-01-04, 00:28:01 -->
+<!-- Copyright (C) 2010 Jürgen Hamel, jhamel@cyrus-computer.de -->
+<Project version="4.6">
+  <Language>en_US</Language>
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <ProjectType>Other</ProjectType>
+  <Description>a server for 3D worlds written in python</Description>
+  <Version>0.1</Version>
+  <Author>Jürgen Hamel</Author>
+  <Email>jhamel@cyrus-computer.de</Email>
+  <Sources>
+    <Source>login.py</Source>
+    <Source>GridServer.py</Source>
+    <Source>DB_Com_server.py</Source>
+    <Source>mainxmlrpc.py</Source>
+    <Source>pl_server.py</Source>
+    <Source>smtpclient_tls.py</Source>
+    <Source>startServer.py</Source>
+    <Source>UserServer.py</Source>
+    <Source>databases/__init__.py</Source>
+    <Source>databases/basics.py</Source>
+    <Source>databases/constants.py</Source>
+    <Source>databases/cyr_column.py</Source>
+    <Source>databases/cyr_load_entries.py</Source>
+    <Source>databases/cyr_load_table.py</Source>
+    <Source>databases/cyr_table.py</Source>
+    <Source>databases/databases.py</Source>
+    <Source>databases/dataEntry.py</Source>
+    <Source>databases/DB_Com.py</Source>
+    <Source>databases/dumps.py</Source>
+    <Source>databases/Funcs.py</Source>
+    <Source>databases/setOfEntries.py</Source>
+    <Source>databases/SingleData.py</Source>
+    <Source>databases/SingleDataTreeModel.py</Source>
+    <Source>databases/SQL.py</Source>
+    <Source>DB_Represntations/User.py</Source>
+    <Source>xmlrpc/xmlrpc.py</Source>
+    <Source>xmlrpc/__init__.py</Source>
+    <Source>xmlrpc/MyXML.py</Source>
+  </Sources>
+  <Forms>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Resources>
+  </Resources>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+    <Other>etc/ext1.xml</Other>
+    <Other>etc/server.ini</Other>
+    <Other>etc/sql.ini</Other>
+    <Other>etc/sql.xml</Other>
+    <Other>etc/tables.xml</Other>
+    <Other>dev_info/capabilityNames.txt</Other>
+    <Other>dev_info/dest21.grid</Other>
+    <Other>dev_info/login_answers.txt</Other>
+    <Other>dev_info/login_question_from_viewer.txt</Other>
+    <Other>dev_info/src21.grid</Other>
+  </Others>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+  </FiletypeAssociations>
+</Project>
