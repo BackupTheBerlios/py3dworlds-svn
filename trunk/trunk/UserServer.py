@@ -4,13 +4,16 @@ from databases.basics import basics
 import databases.DB_Com
 import uuid
 from xmlrpc.xmlrpc import myXmlRpc
+from misc.usefullThings import usefullThings
 
-class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
+class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def __init__(self):
         xmlrpc.XMLRPC.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
+        
         myXmlRpc.__init__(self)
+        usefullThings.__init__(self)
         self.dicExpectUser = {}
         
         self.defaultUser  = { 'last_name': 'Tairov', 'sim_ip':'85.214.139.187', 'start_location':"last" ,  'seconds_since_epoch': 20000, 'message':'Monday', 'first_name':'Juergen', 'circuit_code':3,  'sim_port':9300,'secure_session_id':'uuid333', 'look_at ':[1.0, 1.0, 1.0],  'agent_id':'aaabb-33dsd-seee', 'inventory_host':'localhost', 'region_y':0.0, 'region_x':0.0, 'seed_capability':'<llsd><map><key>request1</key><string>Capability1</string><key>request2</key><string>Capability2</string</map></llsd> ', 'agent_access': '0', 'session_id': 'aaddss-wewew-33222', 'login': 'true'} 
@@ -138,14 +141,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         dicUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
         print dicUser
         dicUser['custom_type'] = ' '
-        for key in dicUser:
-            try:
-                #very dirty
-                print dicUser[key]
-                dicUser[key] = dicUser[key].strip()
-            except:
-                pass
-        print 'after strip ',  dicUser        
+        dicUser = self.stripIt(dicUser)    
         return dicUser
         
     def xmlrpc_update_avatar_appearance(self, args):
@@ -163,7 +159,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
     def xmlrpc_get_agent_by_uuid(self, args):
         print 'get_agent_by_uuid ',  args
         sSql = "select agents.sessionID as session,  to_char(currentHandle, '999999999999999999999') as handle,  'FALSE' as agent_online "
-        sSql += " from user where users.uuid = '" + args['avatar_uuid']+ "' and agents.uuid = '" + args['avatar_uuid']+ "' "
+        sSql += " from users, agents where users.uuid = '" + args['avatar_uuid']+ "' and agents.uuid = '" + args['avatar_uuid']+ "' "
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         print "result = ",  result
