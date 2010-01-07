@@ -128,13 +128,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
     def xmlrpc_get_user_by_uuid(self, args):
         print 'get_user_by_uuid ',  args
         # response >custom_type profile_want_do  home_region_id >profile_created >profile_image >home_coordinates_x  profile_firstlife_image home_coordinates_y home_coordinates_z >server_asset home_look_x 
-        sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, regions.uuid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
+        sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, homeregionid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
         sSql += " profileImage as profile_image ,  to_char(homelocationx,'FM990.99999') as  home_coordinates_x,  to_char(homelocationy,'FM990.99999') as  home_coordinates_y,  to_char(homelocationz,'FM990.99999') as  home_coordinates_z, "
         sSql += " users.partner,  '' as server_asset,  to_char(profileCanDoMask,'FM99999999990') as profile_can_do,  users.uuid as uuid ,  users.username as firstname,  "
         sSql += " to_char(godlevel,'FM999990') as god_level, '' as   server_inventory,  to_char(userflags,'FM9999999999990') as user_flags,  profileabouttext as profile_about ,  "
         sSql += "to_char(homeregion,'FM9999999999999999990') as home_region,  profilefirsttext as profile_firstlife_about , "
         sSql += " to_char(homelookatx,'FM990.99999') as home_look_x, to_char(homelookaty,'FM990.99999') as home_look_y, to_char(homelookatz,'FM990.99999') as home_look_z "
-        sSql += " from users,  regions where users.uuid = '" + args['avatar_uuid'] + "' and regions.regionhandle = users.homeregion"
+        sSql += " from users  where users.uuid = '" + args['avatar_uuid'] + "' "
         dicUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
         print dicUser
         dicUser['custom_type'] = ' '
@@ -162,7 +162,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
 
     def xmlrpc_get_agent_by_uuid(self, args):
         print 'get_agent_by_uuid ',  args
+        sSql = "select agents.sessionID as session,  to_char(currentHandle, '999999999999999999999') as handle,  'FALSE' as agent_online "
+        sSql += " from user where users.uuid = '" + args['avatar_uuid']+ "' and agents.uuid = '" + args['avatar_uuid']+ "' "
         
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        print "result = ",  result
+        
+        return result[0]
         
     def getNewUUID(self):  
        

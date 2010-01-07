@@ -15,27 +15,29 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc):
     def xmlrpc_simulator_login(self,  args):
         print 'simulator_login ',  args
         # first: delete, then save the data in regions
-        uuid = arg['uuid']
+        uuid = args['originUUID']
         sSql = "delete from regions where uuid = '"  + uuid  + "' "
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
-        sSql = " insert into regions ('uuid, serveruri,region_locx,region_locy, serverremotingport,recvkey, sendkey ')values("  
-        sSql += uuid + ", " 
-        sSql += args['server_uri'] + ", " 
+        sSql = " insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey )values("  
+        sSql += "'" + uuid + "', " 
+        sSql += "'" + args['server_uri'] + "', " 
         sSql += args['region_locx'] + ", " 
         sSql += args['region_locy'] + ", " 
-        sSql += args['sim_ip'] + ", " 
+        sSql += "'" + args['sim_ip'] + "', " 
         sSql += args['remoting_port'] + ", " 
-        sSql += args['recvkey'] + ", " 
-        sSql += args['sendkey'] + ", " 
-        sSql += args['server_uri'] + ", " 
+        sSql += args['recvkey']  + ", "
+        # to do, set the correct key for sendkey
+        sSql += args['recvkey']  
+
+        
 
 
                                                      
         sSql += ") "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
-        
+        print result
         # now send the answer
         dicAnswer = {}
         dicAnswer['authkey'] = ''
@@ -48,6 +50,12 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         
     def xmlrpc_map_block(self,  args):
         print 'map block ',  args
+        # seems tobe cleared , more regions ?
         
+        sSql = "select * from regions where locx between " + `args['xmin']` + " and " + `args['xmax']` + " and locy between " + `args['ymin']` + " and " + `args['ymax']`
+        
+        dicSim = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
         #answer sim_profile...
+        dicSim['sim-profiles'] = []
         
+        return dicSim

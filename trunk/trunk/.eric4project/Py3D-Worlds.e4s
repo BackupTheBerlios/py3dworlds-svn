@@ -2,14 +2,14 @@
 <!DOCTYPE Session SYSTEM "Session-4.3.dtd">
 <!-- eric4 session file for project Py3D-Worlds -->
 <!-- This file was generated automatically, do not edit. -->
-<!-- Saved: 2010-01-05, 11:07:13 -->
+<!-- Saved: 2010-01-07, 00:14:07 -->
 <Session version="4.3">
   <Filenames>
-    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/GridServer.py</Filename>
-    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/DB_Com_server.py</Filename>
-    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/login.py</Filename>
+    <Filename cline="0" cindex="0" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/startServer.py</Filename>
+    <Filename cline="87" cindex="23" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/UserServer.py</Filename>
+    <Filename cline="23" cindex="32" folds="">/home/jhamel/Projekte/Py3D_worlds/trunk/dev_info/xmlrpc_values.txt</Filename>
   </Filenames>
-  <ActiveWindow cline="0" cindex="0">/home/jhamel/Projekte/Py3D_worlds/trunk/DB_Com_server.py</ActiveWindow>
+  <ActiveWindow cline="23" cindex="32">/home/jhamel/Projekte/Py3D_worlds/trunk/dev_info/xmlrpc_values.txt</ActiveWindow>
   <Breakpoints>
   </Breakpoints>
   <Watchexpressions>
