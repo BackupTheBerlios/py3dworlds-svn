@@ -34,8 +34,8 @@ class ServerContextFactory:
         ctx = None
         try:
             ctx = SSL.Context(SSL.SSLv23_METHOD)
-            ctx.use_privatekey_file('etc/pylife/serverkey.pem')
-            ctx.use_certificate_file('etc/pylife/servercert.pem')
+            ctx.use_privatekey_file('/etc/py3d/serverkey.pem')
+            ctx.use_certificate_file('/etc/py3d/servercert.pem')
         except:
             ctx = None
         return ctx

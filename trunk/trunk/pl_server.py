@@ -48,6 +48,6 @@ if openssl:
         reactor.listenSSL(baseSettings.USER_PORT + baseSettings.SSL_OFFSET + port,  server.Site(u), mainxmlrpc.ServerContextFactory())
         print 'HTTPS activated'
     except:
-        print 'Error by activating HTTPS. Please check /etc/cuon/serverkey.pem and /etc/cuon/servercert.pem.'
+        print 'Error by activating HTTPS. Please check serverkey.pem and servercert.pem.'
 
 reactor.run()

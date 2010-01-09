@@ -163,9 +163,11 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         print "result = ",  result
-        
-        return result[0]
-        
+        if result not in self.liSQL_ERRORS:
+            return result[0]
+        else:
+            return {'agents.sessionID': self.NullKey}
+                            
     def getNewUUID(self):  
        
         return str(uuid.uuid4())
