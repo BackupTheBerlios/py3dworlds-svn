@@ -8,6 +8,8 @@ from twisted.web import server
 from databases.basics import basics
 import UserServer
 import GridServer
+import AssetServer
+import InventoryServer
 import databases.DB_Com
 import databases.Funcs
 
@@ -53,6 +55,15 @@ class ServerData(xmlrpc.XMLRPC):
     def getGridSite(self):   
         r = GridServer.GridServer()
         return r
+        
+    def getAssetSite(self):   
+        r = AssetServer.AssetServer()
+        return r   
+        
+    def getInventorySite(self):   
+        r = InventoryServer.InventoryServer()
+        return r
+        
     def getDB_ComSite(self):
         r = databases.Funcs.Funcs()
         r.putSubHandler('Database', databases.DB_Com.DB_Com() )

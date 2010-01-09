@@ -42,6 +42,14 @@ class basics(xmlrpc.XMLRPC):
         self.GRID_HOST = 'localhost'
         self.GRID_PROTO = "http"
         
+        self.ASSET_PORT = 8003
+        self.ASSET_HOST = 'localhost'
+        self.ASSET_PROTO = "http"
+        
+        Self.INVENTORY_PORT = 8004
+        self.INVENTORY_HOST = 'localhost'
+        self.INVENTORY_PROTO = "http"
+        
         self.WEBPATH = '/var/cuon_www/'
         self.WEB_HOST = 'localhost'
         self.WEB_PORT = 7081
