@@ -26,31 +26,33 @@ from basics import basics
 class SQL(xmlrpc.XMLRPC, basics):
     def __init__(self):
         basics.__init__(self)
- 
-    def xmlrpc_executeNormalQuery(self, cSql, dicUser={'Name':'griddata', 'SessionID':'0'}):
+        dicUser={'Name':'griddata', 'SessionID':'0'}
+        sUser =dicUser['Name']
+        print 'sUser = ',  sUser
+        self.conn = pg.connect(dbname = 'griddata',host = self.POSTGRES_HOST, port = self.POSTGRES_PORT, user = sUser)
+        
+    def xmlrpc_executeNormalQuery(self, cSql,  dicUser = None):
         #print "Start ExecuteQuere"
        
-        conn = None
         dicResult = None
         rows = None
         #print dicUser
         #print cSql
-        sUser =dicUser['Name']
-        print 'sUser = ',  sUser
+        
         try:
             self.out('execute SQL = ' + `cSql`)
             
             
             #self.writeLog('User = ' + sUser)
             #DSN = 'dbname=cuon host=localhost user=' + sUser
-            conn = pg.connect(dbname = 'griddata',host = self.POSTGRES_HOST, port = self.POSTGRES_PORT, user = sUser)
+            
             #conn = pg.connect(dbname = 'cuon',host = self.POSTGRES_HOST, user = sUser)
             #curs.execute(cSql.decode('utf-8'))
             #conn = libpq.PQconnectdb(dbname='cuon',host = 'localhost', user = sUser)
-            print "conn = ",  conn
+            #print "conn = ",  conn
             try:
                                        
-                rows = conn.query(cSql.encode('utf-8'))
+                rows = self.conn.query(cSql.encode('utf-8'))
                 #self.writeLog('return from database = ' + `rows`)
             except:
                 rows = 'ERROR'

@@ -1295,8 +1295,8 @@
     <field>
       <name>UUID</name>
       <type>varchar</type>
-      <pkey>1</pkey>
-      <unique>1</unique>
+      <pkey>0</pkey>
+      <unique>0</unique>
       <notnull>1</notnull>
       <size>36</size>
       <default></default>
@@ -1308,7 +1308,7 @@
       <type>int</type>
       <pkey>0</pkey>
       <unique>0</unique>
-      <notnull>0</notnull>
+      <notnull>1</notnull>
       <size>0</size>
       <default></default>
       <comment></comment>
@@ -1319,7 +1319,7 @@
       <type>char</type>
       <pkey>0</pkey>
       <unique>0</unique>
-      <notnull>0</notnull>
+      <notnull>1</notnull>
       <size>36</size>
       <default></default>
       <comment></comment>
@@ -1330,7 +1330,7 @@
       <type>char</type>
       <pkey>0</pkey>
       <unique>0</unique>
-      <notnull>0</notnull>
+      <notnull>1</notnull>
       <size>36</size>
       <default></default>
       <comment></comment>
@@ -1556,5 +1556,356 @@
       
     </field>
     </table>
+    
+      <table>
+    <nameOfTable>avatarappearance</nameOfTable>
+    <x>22</x>
+    <y>35</y>
+    
+    
+    <field>
+      <name>Owner</name>
+      <type>varchar</type>
+      <pkey>1</pkey>
+      <unique>1</unique>
+      <notnull>1</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    
+    <field>
+      <name>serial</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>0</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Visual_Params</name>
+      <type>text</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>0</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+       <field>
+      <name>Texture</name>
+      <type>text</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>0</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+       <field>
+      <name>Avatar_Height</name>
+      <type>float</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>0</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+      <field>
+      <name>Body_item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Body_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Skin_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Skin_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Hair_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Hair_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Eyes_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Eyes_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Shirt_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Shirt_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>pants_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>pants_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Shoes_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Shoes_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Socks_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Socks_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Jacket_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Jacket_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Gloves_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Gloves_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Undershirt_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Undershirt_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Underpants_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Underpants_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>Skirt_Item</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>Skirt_Asset</name>
+      <type>char</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>36</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    </table>
+    
     
 </database>
