@@ -1377,7 +1377,7 @@ class Transport:
         h = self.make_connection(host)
         if verbose:
             h.set_debuglevel(1)
-        print 'new,  own xmlrpc'
+        #print 'new,  own xmlrpc'
         self.send_request(h, handler, request_body)
         self.send_host(h, host)
         self.send_user_agent(h)
@@ -1520,8 +1520,8 @@ class Transport:
 
     def _parse_response(self, file, sock):
         # read response from input file/socket, and parse it
-	print 'sock = ', sock
-	print 'file = ', file
+        #print 'sock = ', sock
+        #print 'file = ', file
 
         p, u = self.getparser()
 

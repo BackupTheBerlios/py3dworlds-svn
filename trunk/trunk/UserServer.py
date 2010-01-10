@@ -8,6 +8,7 @@ import uuid
 from xmlrpc.xmlrpc import myXmlRpc
 from misc.usefullThings import usefullThings
 
+
 class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def __init__(self):
         
@@ -18,6 +19,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         myXmlRpc.__init__(self)
         usefullThings.__init__(self)
         self.dicExpectUser = {}
+        
+        
         
         self.defaultUser  = { 'last_name': 'Tairov', 'sim_ip':'85.214.139.187', 'start_location':"last" ,  'seconds_since_epoch': 20000, 'message':'Monday', 'first_name':'Juergen', 'circuit_code':3,  'sim_port':9300,'secure_session_id':'uuid333', 'look_at ':[1.0, 1.0, 1.0],  'agent_id':'aaabb-33dsd-seee', 'inventory_host':'localhost', 'region_y':0.0, 'region_x':0.0, 'seed_capability':'<llsd><map><key>request1</key><string>Capability1</string><key>request2</key><string>Capability2</string</map></llsd> ', 'agent_access': '0', 'session_id': 'aaddss-wewew-33222', 'login': 'true'} 
         
@@ -110,6 +113,9 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser = {}
         self.server = 'http://cuonsim1.de:9300'
         # defaults for testing
+        sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
+        dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+                
         dicSimUser['circuit_code'] = 105842181
         dicSimUser['regionhandle'] = "11006111396599296"
         dicSimUser['lastname'] = dicResult['last_name']
@@ -119,13 +125,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser['startpos_x'] = '20'
         dicSimUser['startpos_y'] = '20'
         dicSimUser['startpos_z'] = '40'
-        dicSimUser['caps_path']= '0e99f86e-9dce-425b-a536-0834ed61ef6a'
+        dicSimUser['caps_path']= self.getUUID()
         dicSimUser['region_x'] = `dicResult['region_x']`
         dicSimUser['region_y'] = `dicResult['region_y']`
         dicSimUser['folder_id'] = '3e1a8134-f9d7-40a1-9a01-7fff99ac8536'
         dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
-        dicSimUser['body_asset'] = '41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1'
-        dicSimUser['shirt_item'] = '77c41e39-38f9-f75a-0000-585989bf0000'
+        
+        
         # test it
         #self.server = 'http://cuonsim2.de:7080'
         #answer = self.callRP('Database.is_running' )
@@ -134,8 +140,43 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
         answer = self.callRP('expect_user',  dicSimUser)
         print 'answer from sim:',  answer
-        
-        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + '0e99f86e-9dce-425b-a536-0834ed61ef6a' +'0000/'
+        doc = self.MyXml.readXmlString(answer)
+        print doc
+        element = self.MyXml.getRootNode(doc)
+        print element
+#        for i in ['params','param', 'value', 'struct']:
+#            element = self.MyXml.getNode(element, i)
+#            print element
+        elements = self.MyXml.getNodes(element[0], 'member')
+        print 'elements = ',  elements
+        reason = ''
+        for oneMember in elements:
+            print 'onemember = ',  oneMember
+            print 'node = ',  self.MyXml.getSingleNode(oneMember, 'name')
+            
+            if  self.MyXml.getData(self.MyXml.getSingleNode(oneMember, 'name')[0]) == 'success':
+                print 'success gefunden'
+#                node1 = self.MyXml.getSingleNode(oneMember, 'value')
+#                node2 = self.MyXml.getNode(node1,'string')
+#                data = self.MyXml.getData(node2[0])
+#                print data 
+                dicResult['login'] = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getSingleNode(oneMember, 'value'), 'string')[0]).lower() 
+                print dicResult['login'] 
+                
+            if  self.MyXml.getData(self.MyXml.getSingleNode(oneMember, 'name')[0]) == 'reason':
+                print 'reason gefunden'
+                reason = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getSingleNode(oneMember, 'value'), 'string')[0]).lower() 
+        if dicResult['login'] == 'false':
+            dicResult['message'] = reason
+            
+#        print 'success = ',      self.MyXml.getData(self.MyXml.getNode(element, 'name')[0])
+#        if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'success':
+#             dicResult['login'] = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getNode(element, 'value'), 'string')[0]).lower()
+#             if dicResult['login'] == 'false':
+#                 if if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'reason':
+#                 dicResult['message'] = 
+#               
+        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
 
         return dicResult
         
