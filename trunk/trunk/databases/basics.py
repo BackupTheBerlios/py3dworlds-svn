@@ -117,7 +117,7 @@ class basics(xmlrpc.XMLRPC):
         self.IMAP_USERNAME = 'test'
         self.IMAP_PASSWORD = 'test'
 
-        self.liSQL_ERRORS =  ['NONE','ERROR']
+        self.liSQL_ERRORS =  ['NONE','ERROR', None]
         self.NullKey =   '00000000-0000-0000-0000-000000000000'
         
         

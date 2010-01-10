@@ -1,5 +1,7 @@
 # coding=utf-8
 from twisted.web import xmlrpc
+from twisted.internet import reactor, defer
+
 from databases.basics import basics
 import databases.DB_Com
 import uuid
@@ -8,6 +10,7 @@ from misc.usefullThings import usefullThings
 
 class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def __init__(self):
+        
         xmlrpc.XMLRPC.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
@@ -56,7 +59,9 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #+-------------------+---------------------+------+-----+--------------------------------------+-------+ '''
 
 
-   
+    def xmlrpc_getTest(self):
+        return 42
+        
   
     def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
         sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
@@ -95,12 +100,15 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
         if dicResult not in ['NONE', 'ERROR']:
             dicResult = self.informSim(dicResult)
+            #self.informSim(dicResult)
             
+
         return dicResult
+        
     def informSim(self,  dicResult):
         #self.server = dicResult['serveruri']
         dicSimUser = {}
-        self.server = 'http://cuonsim1.de:9300/'
+        self.server = 'http://cuonsim1.de:9300'
         # defaults for testing
         dicSimUser['circuit_code'] = 105842181
         dicSimUser['regionhandle'] = "11006111396599296"
@@ -118,6 +126,11 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
         dicSimUser['body_asset'] = '41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1'
         dicSimUser['shirt_item'] = '77c41e39-38f9-f75a-0000-585989bf0000'
+        # test it
+        #self.server = 'http://cuonsim2.de:7080'
+        #answer = self.callRP('Database.is_running' )
+        #print 'Answer 1 = ',  answer
+        #sys.exit(0)
         
         answer = self.callRP('expect_user',  dicSimUser)
         print 'answer from sim:',  answer
@@ -130,6 +143,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
     def xmlrpc_get_user_by_uuid(self, args):
         print 'get_user_by_uuid ',  args
+        
+        
         # response >custom_type profile_want_do  home_region_id >profile_created >profile_image >home_coordinates_x  profile_firstlife_image home_coordinates_y home_coordinates_z >server_asset home_look_x 
         sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, homeregionid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
         sSql += " profileImage as profile_image ,  to_char(homelocationx,'FM990.99999') as  home_coordinates_x,  to_char(homelocationy,'FM990.99999') as  home_coordinates_y,  to_char(homelocationz,'FM990.99999') as  home_coordinates_z, "
