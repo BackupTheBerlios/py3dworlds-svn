@@ -19,3 +19,5 @@ class usefullThings:
 
     def getUUID(self):
         return  str(uuid.uuid4())
+
+    

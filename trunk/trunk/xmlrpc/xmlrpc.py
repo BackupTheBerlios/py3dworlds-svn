@@ -1345,7 +1345,7 @@ class _Method:
     def __getattr__(self, name):
         return _Method(self.__send, "%s.%s" % (self.__name, name))
     def __call__(self, *args):
-	print "rpc-call", args
+        print "rpc-call", args
         return self.__send(self.__name, args)
 
 ##

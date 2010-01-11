@@ -5,25 +5,32 @@ import databases.DB_Com
 import uuid
 from xmlrpc.xmlrpc import myXmlRpc
 from misc.usefullThings import usefullThings
+from regions.Region import Region
 
-class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
+
+
+class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
     def __init__(self):
         xmlrpc.XMLRPC.__init__(self)
         basics.__init__(self)
+        Region.__init__(self)
+        
         self.db_com = databases.DB_Com.DB_Com()
         myXmlRpc.__init__(self)
         usefullThings.__init__(self)
-
+        
+        
 
     def xmlrpc_simulator_login(self,  args):
         print 'simulator_login ',  args
         # first: delete, then save the data in regions
-        uuid = args['originUUID']
+        uuid = args['UUID']
         sSql = "delete from regions where uuid = '"  + uuid  + "' "
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
-        sSql = " insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey )values("  
+        sSql = " insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey , owner_uuid, " 
+        sSql += "serverHttpPort, regionSecret, regionName, regionHandle)values("  
         sSql += "'" + uuid + "', " 
         sSql += "'" + args['server_uri'] + "', " 
         sSql += args['region_locx'] + ", " 
@@ -32,7 +39,15 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSql += args['remoting_port'] + ", " 
         sSql += args['recvkey']  + ", "
         # to do, set the correct key for sendkey
-        sSql += args['recvkey']  
+        sSql += args['recvkey']  + ",  "
+        sSql += "'" + args['master_avatar_uuid']  + "', "
+        sSql += args['http_port']  + ", "
+        sSql += "'" + args['region_secret']  + "', "
+        sSql += "'" + args['sim_name']  + "',  "
+        sSql +=  self.convertTo(self.getRegionHandle(int(args['region_locx']), int( args['region_locy']) ), 'String') + " "
+        #sSql += args['recvkey']  + ", "
+        #sSql += args['recvkey']  + ", "
+        #sSql += args['recvkey']  + ", "
 
         
 

@@ -101,7 +101,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def xmlrpc_login_to_simulator(self, args):
         print "Incoming --> ",   args
         dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
-        if dicResult not in ['NONE', 'ERROR']:
+        if dicResult not in ['NONE', 'ERROR', None]:
             dicResult = self.informSim(dicResult)
             #self.informSim(dicResult)
             
@@ -130,7 +130,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser['region_y'] = `dicResult['region_y']`
         dicSimUser['folder_id'] = '3e1a8134-f9d7-40a1-9a01-7fff99ac8536'
         dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
-        
+        dicSimUser['agent_id'] = dicResult['uuid']
         
         # test it
         #self.server = 'http://cuonsim2.de:7080'
@@ -175,7 +175,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #             if dicResult['login'] == 'false':
 #                 if if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'reason':
 #                 dicResult['message'] = 
-#               
+        dicResult['caps_path'] = dicSimUser['caps_path']
         dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
 
         return dicResult
@@ -219,7 +219,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         print "result = ",  result
-        if result not in self.liSQL_ERRORS:
+        if result and result not in self.liSQL_ERRORS:
             return result[0]
         else:
             return {'agents.sessionID': self.NullKey}
