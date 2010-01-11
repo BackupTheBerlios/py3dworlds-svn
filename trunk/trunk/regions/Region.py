@@ -8,3 +8,13 @@ class Region(constants,  Utils):
 
     def getRegionHandle(self,  x,  y):
         return  self.make64BitInt(x * self.RegionSize,   y * self.RegionSize);
+
+    def getRegionHandleList(self, x, y):
+        liRegion = []
+        liRegion.append(x*self.RegionSize)
+        liRegion.append(y*self.RegionSize)
+        return liRegion
+        
+    def getRegionHandleXY(self, x, y):
+         return x*self.RegionSize,  y*self.RegionSize
+         

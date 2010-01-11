@@ -7,6 +7,7 @@ import databases.DB_Com
 import uuid
 from xmlrpc.xmlrpc import myXmlRpc
 from misc.usefullThings import usefullThings
+import regions.Region
 
 
 class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
@@ -19,7 +20,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         myXmlRpc.__init__(self)
         usefullThings.__init__(self)
         self.dicExpectUser = {}
-        
+        self.Region = regions.Region.Region()
         
         
         self.defaultUser  = { 'last_name': 'Tairov', 'sim_ip':'85.214.139.187', 'start_location':"last" ,  'seconds_since_epoch': 20000, 'message':'Monday', 'first_name':'Juergen', 'circuit_code':3,  'sim_port':9300,'secure_session_id':'uuid333', 'look_at ':[1.0, 1.0, 1.0],  'agent_id':'aaabb-33dsd-seee', 'inventory_host':'localhost', 'region_y':0.0, 'region_x':0.0, 'seed_capability':'<llsd><map><key>request1</key><string>Capability1</string><key>request2</key><string>Capability2</string</map></llsd> ', 'agent_access': '0', 'session_id': 'aaddss-wewew-33222', 'login': 'true'} 
@@ -68,12 +69,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
   
     def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
         sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
-        sSql += "  '{ region_handle: [' || '2562560,2561536' || '] , position: [' || to_char(users.homelocationx,'000.999999') "
-        sSql += " || ', ' || to_char(users.homelocationy,'000.999999') || ', ' || to_char(users.homelocationz,'000.999999') || '] ,  look_at: ['"
-        sSql += " || to_char(users.homelookatx,'000.999999') "
-        sSql += " || ', ' ||  to_char(users.homelookaty,'000.999999') || ', ' || to_char(users.homelookatz,'000.999999') || '] }'  as home, "
+        sSql += " locx,  locy,  "
+        sSql += " to_char(users.homelocationx,'000.999999')  as homex, "
+        sSql += " to_char(users.homelocationy,'000.999999') as homey,  to_char(users.homelocationz,'000.999999') as homez , "
+        sSql += " to_char(users.homelookatx,'000.999999') as lookatx, to_char(users.homelookaty,'000.999999') as lookaty, "
+        sSql += " to_char(users.homelookatz,'000.999999') as lookatz,  "
         sSql += " '[1, 0, 0]' as look_at , 'A' as agent_access_max,  regions.serveruri as serveruri, "
-        sSql += " '2562560' as region_x,  '2561536' as region_y, 1546967460 as circuit_code,  "
+        sSql += "  1546967460 as circuit_code,  regions.owner_uuid , "
         sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
         sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
         sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
@@ -81,6 +83,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSql += " agents.securesessionid as secure_session_id,  agents.sessionid as session_id "
         sSql += " from users , regions, agents where users.username = '" + sUsername + "' and users.lastname = '" + sLastname + "' "
         sSql +=  " and agents.uuid = users.uuid and agents.currentregion = regions.uuid "
+        
         
         #sSql = "select * from agents where uuid = '" + result[0]['uuid'] + "' "
         
@@ -91,12 +94,22 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         print '###################  regions #####'
     
         #dicUser = result[0]
-        
-            
+        home = {}
+        home['region_handle'] = self.Region.getRegionHandleList(result[0]['locx'], result[0]['locy'] )
+        home['position'] = [result[0]['homex'],result[0]['homey'],result[0]['homez'] ]
+        home['look_at'] = [result[0]['lookatx'], result[0]['lookaty'], result[0]['lookatz'] ]
+        result[0]['home']    = `home`
+        result[0]['region_x'] ,   result[0]['region_y'] = self.Region.getRegionHandleXY(result[0]['locx'],result[0]['locy']  )
+        result[0]['regionhandle'] = self.convertTo(self.Region.getRegionHandle(result[0]['locx'], result[0]['locy'] ),  'String')
         #self.server = 'http://' + dicUser['serverip'] + ':' + dicUser['serverhttpport']
         #self.callRP('expect_user',  )
         #inform the sim with expect_user
-        print result[0]
+        print 'home = ',   result[0]['home']
+        print 'region x = ',   result[0]['region_x']
+        print 'region y = ',   result[0]['region_y']
+        
+        print 'regionhandle = ',   result[0]['regionhandle']
+        
         return result[0]
     def xmlrpc_login_to_simulator(self, args):
         print "Incoming --> ",   args
@@ -113,11 +126,12 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser = {}
         self.server = 'http://cuonsim1.de:9300'
         # defaults for testing
-        sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
-        dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+        dicSimUser = {}
+        #sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
+        #dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
                 
         dicSimUser['circuit_code'] = 105842181
-        dicSimUser['regionhandle'] = "11006111396599296"
+        dicSimUser['regionhandle'] = dicResult['regionhandle']
         dicSimUser['lastname'] = dicResult['last_name']
         dicSimUser['firstname'] = dicResult['first_name']
         dicSimUser['secure_session_id'] = dicResult['secure_session_id']
@@ -129,7 +143,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         dicSimUser['region_x'] = `dicResult['region_x']`
         dicSimUser['region_y'] = `dicResult['region_y']`
         dicSimUser['folder_id'] = '3e1a8134-f9d7-40a1-9a01-7fff99ac8536'
-        dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
+        dicSimUser['owner'] = dicResult['owner_uuid']
         dicSimUser['agent_id'] = dicResult['uuid']
         
         # test it

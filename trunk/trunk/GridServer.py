@@ -44,7 +44,8 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         sSql += args['http_port']  + ", "
         sSql += "'" + args['region_secret']  + "', "
         sSql += "'" + args['sim_name']  + "',  "
-        sSql +=  self.convertTo(self.getRegionHandle(int(args['region_locx']), int( args['region_locy']) ), 'String') + " "
+        regionHandle =  self.convertTo(self.getRegionHandle(int(args['region_locx']), int( args['region_locy']) ), 'String') 
+        sSql +=  regionHandle + " "
         #sSql += args['recvkey']  + ", "
         #sSql += args['recvkey']  + ", "
         #sSql += args['recvkey']  + ", "
@@ -56,11 +57,34 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         sSql += ") "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         print result
+        # search neighbours
+        x = int(args['region_locx'])
+        y = int(args['region_locy'])
+        
+        sSql = "select locx,  locy , serverip as sim_ip, serverport as sim_port from regions where locx between  " + `x-1` + " and " + `x+1` 
+        sSql += " and  locy between " + `y-1` + " and " + `y+1` 
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        
         # now send the answer
-        dicAnswer = {}
-        dicAnswer['authkey'] = ''
-        dicAnswer['neighbours'] =''
-        dicAnswer['OpenSim.Data.RegionProfileData'] = ''
+        dicAnswer = args
+        dicAnswer['authkey'] = args['authkey']
+        liRegion = []
+        print result
+        if result and result not in self.liSQL_ERRORS:
+           
+            for i in result:
+                dicRecgion = {}
+                dicRecgion[']regionHandle'] = self.convertTo(self.getRegionHandle(int(i['locx']), int( i['locy']) ), 'String') 
+                dicRecgion['region_locx'] = `i['locx']`
+                dicRecgion['region_locy'] = `i['locy']`
+                dicRecgion['sim_ip'] = `i['sim_ip']`
+                dicRecgion['sim_port'] = `i['sim_port']`
+                dicRecgion['UUID'] = 'OpenSim.Data.RegionProfileData'
+                
+                liRegion.append(dicRecgion)
+                
+            
+        dicAnswer['neighbours'] =liRegion
         
         
         return dicAnswer

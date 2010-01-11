@@ -4,7 +4,6 @@ class Utils:
         pass
         
     def make64BitInt(self, x, y):
-        z = `x` + `y`
-        z = z.replace("'", "")
-        return long(z)
-     
+        
+        
+        return   (long(x) << 32) + long(y)
