@@ -224,9 +224,28 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
     def xmlrpc_update_avatar_appearance(self, args):
         print 'update_avatar_appearance ',  args
-        
-        dicResult = {'returnString', 'TRUE'}
-        print 
+                
+        sSql = "DELETE FROM avatarappearance WHERE owner = '" + args['owner'] + "'"
+        sql_result_delete = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        print 'update_avatar_appearance SQL-delete rersult', sql_result_delete
+
+        sSQL = "INSERT INTO avatarappearance (Owner, Serial, Visual_Params, Texture, Avatar_Height, Body_Item, Body_Asset, Skin_Item, "
+        sSQL += "Skin_Asset, Hair_Item, Hair_Asset, Eyes_Item, Eyes_Asset, Shirt_Item, Shirt_Asset, Pants_Item, Pants_Asset, "
+        sSQL += "Shoes_Item, Shoes_Asset, Socks_Item, Socks_Asset, Jacket_Item, Jacket_Asset, Gloves_Item, Gloves_Asset, "
+        sSQL += "Undershirt_Item, Undershirt_Asset, Underpants_Item, Underpants_Asset, Skirt_Item, Skirt_Asset) VALUES ("
+        sSQL += "'" + args['owner'] + "', " + args['serial'] + ", '" + args['visual_params'] + "', '" + args['texture'] + "', "
+        sSQL += args['avatar_height'] + ", '" + args['body_item'] + "', '" + args['body_asset'] + "', " + args['skin_item'] + "', '"
+        sSQL += args['skin_asset'] + "', '" + args['hair_item'] + "', '" + args['hair_asset'] + "', '" + args['eyes_item'] + "', '"
+        sSQL += args['eyes_asset'] + "', '" + args['shirt_item'] + "', '" + args['shirt_asset'] + "', '" + args['pants_item'] + "', '"
+        sSQL += args['shoes_item'] + "', '" args['shoes_asset'] + "', '" + args['socks_item'] + "', '" + args['socks_asset'] + "', '"
+        sSQL += args['jacket_item'] + "', '" + args['jacket_asset'] + "', '" + args['gloves_item'] + "', '" + args['gloves_asset'] + "', '"
+        sSQL += args['undershirt_item'] + "', '" + args['undershirt_asset'] + "', '" + args['underpants_item'] + "', '" + args['underpants_asset'] + "', '"
+        sSQL += args['skirt_item'] + "', '" + args['skirt_asset'] + "')"
+        sql_result_insert = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        print 'update_avatar_appearance SQL-insert rersult', sql_result_insert
+
+        dicResult = {'returnString' : 'TRUE'}
+        print 'dicResult', dicResult
         
         return dicResult
          

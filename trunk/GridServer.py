@@ -29,7 +29,7 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
-        sSql = " insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey , owner_uuid, " 
+        sSql = "insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey , owner_uuid, " 
         sSql += "serverHttpPort, regionSecret, regionName, regionHandle)values("  
         sSql += "'" + uuid + "', " 
         sSql += "'" + args['server_uri'] + "', " 
