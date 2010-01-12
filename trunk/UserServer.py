@@ -223,7 +223,12 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         return dicUser
         
     def xmlrpc_update_avatar_appearance(self, args):
-        print 'update_avatar_appearance ',  args 
+        print 'update_avatar_appearance ',  args
+        
+        dicResult = {'returnString', 'TRUE'}
+        print 
+        
+        return dicResult
          
     def xmlrpc_check_auth_session(self, args):
         print 'check_auth_session ',  args
