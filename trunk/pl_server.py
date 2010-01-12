@@ -24,6 +24,8 @@ import locale, gettext
 m = mainxmlrpc.ServerData()
 u = m.getUserSite()
 g = m.getGridSite()
+a = m.getAssetSite()
+i = m.getInventorySite()
 
 try:    
     port = int(sys.argv[1])
@@ -31,9 +33,13 @@ except:
     port = 0
 print port
 
-reactor.listenTCP(baseSettings.USER_PORT + port, server.Site(u))
+reactor.listenTCP(baseSettings.USER_PORT + port , server.Site(u))
 
 reactor.listenTCP(baseSettings.GRID_PORT + port, server.Site(g))
+
+reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
+
+reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
 
 if openssl:
     """Create an SSL context."""
@@ -42,6 +48,6 @@ if openssl:
         reactor.listenSSL(baseSettings.USER_PORT + baseSettings.SSL_OFFSET + port,  server.Site(u), mainxmlrpc.ServerContextFactory())
         print 'HTTPS activated'
     except:
-        print 'Error by activating HTTPS. Please check /etc/cuon/serverkey.pem and /etc/cuon/servercert.pem.'
+        print 'Error by activating HTTPS. Please check serverkey.pem and servercert.pem.'
 
 reactor.run()

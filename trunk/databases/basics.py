@@ -42,6 +42,14 @@ class basics(xmlrpc.XMLRPC):
         self.GRID_HOST = 'localhost'
         self.GRID_PROTO = "http"
         
+        self.ASSET_PORT = 8003
+        self.ASSET_HOST = 'localhost'
+        self.ASSET_PROTO = "http"
+        
+        self.INVENTORY_PORT = 8004
+        self.INVENTORY_HOST = 'localhost'
+        self.INVENTORY_PROTO = "http"
+        
         self.WEBPATH = '/var/cuon_www/'
         self.WEB_HOST = 'localhost'
         self.WEB_PORT = 7081
@@ -76,7 +84,6 @@ class basics(xmlrpc.XMLRPC):
         self.OSC_PORT = 5432
         self.OSC_DB = 'cuon'
         self.OSC_USER = 'Test'
-        self.liSQL_ERRORS =  ['NONE','ERROR']
         
         self.PdfEncoding = 'latin-2'
         
@@ -109,6 +116,10 @@ class basics(xmlrpc.XMLRPC):
         self.IMAP_PORT = 143
         self.IMAP_USERNAME = 'test'
         self.IMAP_PASSWORD = 'test'
+
+        self.liSQL_ERRORS =  ['NONE','ERROR']
+        self.NullKey =   '00000000-0000-0000-0000-000000000000'
+        
         
         try:
             self.cpServer = ConfigParser.ConfigParser()

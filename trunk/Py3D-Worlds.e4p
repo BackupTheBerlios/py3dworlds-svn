@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project Py3D-Worlds -->
-<!-- Saved: 2010-01-04, 00:28:01 -->
+<!-- Saved: 2010-01-12, 00:04:27 -->
 <!-- Copyright (C) 2010 Jürgen Hamel, jhamel@cyrus-computer.de -->
 <Project version="4.6">
   <Language>en_US</Language>
   <ProgLanguage mixed="0">Python</ProgLanguage>
-  <ProjectType>Other</ProjectType>
-  <Description>a server for 3D worlds written in python</Description>
+  <ProjectType>Console</ProjectType>
+  <Description>Server for 3D worlds like SecondLife</Description>
   <Version>0.1</Version>
   <Author>Jürgen Hamel</Author>
   <Email>jhamel@cyrus-computer.de</Email>
   <Sources>
-    <Source>login.py</Source>
-    <Source>GridServer.py</Source>
-    <Source>DB_Com_server.py</Source>
-    <Source>mainxmlrpc.py</Source>
-    <Source>pl_server.py</Source>
-    <Source>smtpclient_tls.py</Source>
     <Source>startServer.py</Source>
-    <Source>UserServer.py</Source>
+    <Source>databases/Funcs.py</Source>
     <Source>databases/__init__.py</Source>
     <Source>databases/basics.py</Source>
     <Source>databases/constants.py</Source>
@@ -31,15 +25,26 @@
     <Source>databases/dataEntry.py</Source>
     <Source>databases/DB_Com.py</Source>
     <Source>databases/dumps.py</Source>
-    <Source>databases/Funcs.py</Source>
     <Source>databases/setOfEntries.py</Source>
     <Source>databases/SingleData.py</Source>
     <Source>databases/SingleDataTreeModel.py</Source>
     <Source>databases/SQL.py</Source>
-    <Source>DB_Represntations/User.py</Source>
-    <Source>xmlrpc/xmlrpc.py</Source>
     <Source>xmlrpc/__init__.py</Source>
+    <Source>xmlrpc/xmlrpc.py</Source>
     <Source>xmlrpc/MyXML.py</Source>
+    <Source>smtpclient_tls.py</Source>
+    <Source>DB_Com_server.py</Source>
+    <Source>GridServer.py</Source>
+    <Source>mainxmlrpc.py</Source>
+    <Source>pl_server.py</Source>
+    <Source>UserServer.py</Source>
+    <Source>misc/usefullThings.py</Source>
+    <Source>misc/__init__.py</Source>
+    <Source>convertBlobs.py</Source>
+    <Source>AssetServer.py</Source>
+    <Source>InventoryServer.py</Source>
+    <Source>regions/Region.py</Source>
+    <Source>utils/Utils.py</Source>
   </Sources>
   <Forms>
   </Forms>
@@ -55,14 +60,122 @@
     <Other>etc/sql.ini</Other>
     <Other>etc/sql.xml</Other>
     <Other>etc/tables.xml</Other>
-    <Other>dev_info/capabilityNames.txt</Other>
-    <Other>dev_info/dest21.grid</Other>
     <Other>dev_info/login_answers.txt</Other>
-    <Other>dev_info/login_question_from_viewer.txt</Other>
-    <Other>dev_info/src21.grid</Other>
+    <Other>dev_info/xmlrpc_values.txt</Other>
   </Others>
+  <MainScript>startServer.py</MainScript>
   <Vcs>
-    <VcsType>None</VcsType>
+    <VcsType>Subversion</VcsType>
+    <VcsOptions>
+      <dict>
+        <key>
+          <string>add</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>checkout</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>commit</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>diff</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>export</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>global</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>history</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>log</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>remove</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>status</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>tag</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>update</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+      </dict>
+    </VcsOptions>
+    <VcsOtherData>
+      <dict>
+        <key>
+          <string>standardLayout</string>
+        </key>
+        <value>
+          <bool>True</bool>
+        </value>
+      </dict>
+    </VcsOtherData>
   </Vcs>
   <FiletypeAssociations>
     <FiletypeAssociation pattern="*.pyw" type="SOURCES" />

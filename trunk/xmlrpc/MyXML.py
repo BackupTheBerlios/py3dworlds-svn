@@ -13,12 +13,15 @@
 ##Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA. 
 
 from xml.dom import minidom
+from xml.dom.minidom import parse, parseString
+
 #from xml.dom.ext.reader import Sax2
 #from xml.dom import ext
 from xml.dom import Node
 #from xml.dom.ext.reader import PyExpat
 import string
 # from amara import *
+
 
 class MyXML:
     """
@@ -110,6 +113,8 @@ class MyXML:
 
         return  doc
               
+    def readXmlString(self,  sXml):    
+        return parseString(sXml)
         
     def getRootNode(self, doc):
         return doc.childNodes
@@ -310,7 +315,10 @@ class MyXML:
             else:
                 return "EMPTY"
             
-
+    def getSingleNode(self,  cyNode,  cyValue):
+        return cyNode.getElementsByTagName(cyValue)
+        
+        
     def getNode(self, cyNode, cyValue):
         #print cyNode[0].toxml()
         OneNode = cyNode[0]

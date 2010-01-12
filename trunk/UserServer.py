@@ -1,17 +1,29 @@
 # coding=utf-8
 from twisted.web import xmlrpc
+#from twisted.internet import defer
+from twisted.internet.threads import deferToThread
+
 from databases.basics import basics
 import databases.DB_Com
 import uuid
 from xmlrpc.xmlrpc import myXmlRpc
+from misc.usefullThings import usefullThings
+import regions.Region
+from time import sleep
 
-class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
+
+class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def __init__(self):
+        
         xmlrpc.XMLRPC.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
+        
         myXmlRpc.__init__(self)
+        usefullThings.__init__(self)
         self.dicExpectUser = {}
+        self.Region = regions.Region.Region()
+        
         
         self.defaultUser  = { 'last_name': 'Tairov', 'sim_ip':'85.214.139.187', 'start_location':"last" ,  'seconds_since_epoch': 20000, 'message':'Monday', 'first_name':'Juergen', 'circuit_code':3,  'sim_port':9300,'secure_session_id':'uuid333', 'look_at ':[1.0, 1.0, 1.0],  'agent_id':'aaabb-33dsd-seee', 'inventory_host':'localhost', 'region_y':0.0, 'region_x':0.0, 'seed_capability':'<llsd><map><key>request1</key><string>Capability1</string><key>request2</key><string>Capability2</string</map></llsd> ', 'agent_access': '0', 'session_id': 'aaddss-wewew-33222', 'login': 'true'} 
         
@@ -53,16 +65,25 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
 #+-------------------+---------------------+------+-----+--------------------------------------+-------+ '''
 
 
-   
-  
+    def xmlrpc_getTest(self):
+    
+        return deferToThread(self.getNumber)
+
+
+        
+    def getNumber(self):
+        sleep(10)
+        return 42
+        
     def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
         sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
-        sSql += "  '{ region_handle: [' || '2562560,2561536' || '] , position: [' || to_char(users.homelocationx,'000.999999') "
-        sSql += " || ', ' || to_char(users.homelocationy,'000.999999') || ', ' || to_char(users.homelocationz,'000.999999') || '] ,  look_at: ['"
-        sSql += " || to_char(users.homelookatx,'000.999999') "
-        sSql += " || ', ' ||  to_char(users.homelookaty,'000.999999') || ', ' || to_char(users.homelookatz,'000.999999') || '] }'  as home, "
+        sSql += " locx,  locy,  "
+        sSql += " to_char(users.homelocationx,'000.999999')  as homex, "
+        sSql += " to_char(users.homelocationy,'000.999999') as homey,  to_char(users.homelocationz,'000.999999') as homez , "
+        sSql += " to_char(users.homelookatx,'000.999999') as lookatx, to_char(users.homelookaty,'000.999999') as lookaty, "
+        sSql += " to_char(users.homelookatz,'000.999999') as lookatz,  "
         sSql += " '[1, 0, 0]' as look_at , 'A' as agent_access_max,  regions.serveruri as serveruri, "
-        sSql += " '2562560' as region_x,  '2561536' as region_y, 1546967460 as circuit_code,  "
+        sSql += "  1546967460 as circuit_code,  regions.owner_uuid , "
         sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
         sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
         sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
@@ -70,6 +91,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         sSql += " agents.securesessionid as secure_session_id,  agents.sessionid as session_id "
         sSql += " from users , regions, agents where users.username = '" + sUsername + "' and users.lastname = '" + sLastname + "' "
         sSql +=  " and agents.uuid = users.uuid and agents.currentregion = regions.uuid "
+        
         
         #sSql = "select * from agents where uuid = '" + result[0]['uuid'] + "' "
         
@@ -80,27 +102,44 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         print '###################  regions #####'
     
         #dicUser = result[0]
-        
-            
+        home = {}
+        home['region_handle'] = self.Region.getRegionHandleList(result[0]['locx'], result[0]['locy'] )
+        home['position'] = [result[0]['homex'],result[0]['homey'],result[0]['homez'] ]
+        home['look_at'] = [result[0]['lookatx'], result[0]['lookaty'], result[0]['lookatz'] ]
+        result[0]['home']    = `home`
+        result[0]['region_x'] ,   result[0]['region_y'] = self.Region.getRegionHandleXY(result[0]['locx'],result[0]['locy']  )
+        result[0]['regionhandle'] = self.convertTo(self.Region.getRegionHandle(result[0]['locx'], result[0]['locy'] ),  'String')
         #self.server = 'http://' + dicUser['serverip'] + ':' + dicUser['serverhttpport']
         #self.callRP('expect_user',  )
         #inform the sim with expect_user
-        print result[0]
+        print 'home = ',   result[0]['home']
+        print 'region x = ',   result[0]['region_x']
+        print 'region y = ',   result[0]['region_y']
+        
+        print 'regionhandle = ',   result[0]['regionhandle']
+        
         return result[0]
     def xmlrpc_login_to_simulator(self, args):
-        print "Incoming --> ",   args
+        
         dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
-        if dicResult not in ['NONE', 'ERROR']:
-            dicResult = self.informSim(dicResult)
+        if dicResult not in ['NONE', 'ERROR', None]:
+            return deferToThread( self.informSim,  dicResult)
+            #self.informSim(dicResult)
             
+
         return dicResult
+        
     def informSim(self,  dicResult):
         #self.server = dicResult['serveruri']
         dicSimUser = {}
-        self.server = 'http://cuonsim1.de:9300/'
+        self.server = 'http://cuonsim1.de:9300'
         # defaults for testing
+        dicSimUser = {}
+        #sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
+        #dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+                
         dicSimUser['circuit_code'] = 105842181
-        dicSimUser['regionhandle'] = "11006111396599296"
+        dicSimUser['regionhandle'] = dicResult['regionhandle']
         dicSimUser['lastname'] = dicResult['last_name']
         dicSimUser['firstname'] = dicResult['first_name']
         dicSimUser['secure_session_id'] = dicResult['secure_session_id']
@@ -108,18 +147,58 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         dicSimUser['startpos_x'] = '20'
         dicSimUser['startpos_y'] = '20'
         dicSimUser['startpos_z'] = '40'
-        dicSimUser['caps_path']= '0e99f86e-9dce-425b-a536-0834ed61ef6a'
+        dicSimUser['caps_path']= self.getUUID()
         dicSimUser['region_x'] = `dicResult['region_x']`
         dicSimUser['region_y'] = `dicResult['region_y']`
         dicSimUser['folder_id'] = '3e1a8134-f9d7-40a1-9a01-7fff99ac8536'
-        dicSimUser['owner'] = 'fb65174f-2dde-4c1e-ba13-1a776d6864fd'
-        dicSimUser['body_asset'] = '41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1'
-        dicSimUser['shirt_item'] = '77c41e39-38f9-f75a-0000-585989bf0000'
+        dicSimUser['owner'] = dicResult['owner_uuid']
+        dicSimUser['agent_id'] = dicResult['uuid']
+        
+        # test it
+        #self.server = 'http://cuonsim2.de:7080'
+        #answer = self.callRP('Database.is_running' )
+        #print 'Answer 1 = ',  answer
+        #sys.exit(0)
         
         answer = self.callRP('expect_user',  dicSimUser)
         print 'answer from sim:',  answer
-        
-        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + '0e99f86e-9dce-425b-a536-0834ed61ef6a' +'0000/'
+        doc = self.MyXml.readXmlString(answer)
+        print doc
+        element = self.MyXml.getRootNode(doc)
+        print element
+#        for i in ['params','param', 'value', 'struct']:
+#            element = self.MyXml.getNode(element, i)
+#            print element
+        elements = self.MyXml.getNodes(element[0], 'member')
+        print 'elements = ',  elements
+        reason = ''
+        for oneMember in elements:
+            print 'onemember = ',  oneMember
+            print 'node = ',  self.MyXml.getSingleNode(oneMember, 'name')
+            
+            if  self.MyXml.getData(self.MyXml.getSingleNode(oneMember, 'name')[0]) == 'success':
+                print 'success gefunden'
+#                node1 = self.MyXml.getSingleNode(oneMember, 'value')
+#                node2 = self.MyXml.getNode(node1,'string')
+#                data = self.MyXml.getData(node2[0])
+#                print data 
+                dicResult['login'] = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getSingleNode(oneMember, 'value'), 'string')[0]).lower() 
+                print dicResult['login'] 
+                
+            if  self.MyXml.getData(self.MyXml.getSingleNode(oneMember, 'name')[0]) == 'reason':
+                print 'reason gefunden'
+                reason = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getSingleNode(oneMember, 'value'), 'string')[0]).lower() 
+        if dicResult['login'] == 'false':
+            dicResult['message'] = reason
+            
+#        print 'success = ',      self.MyXml.getData(self.MyXml.getNode(element, 'name')[0])
+#        if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'success':
+#             dicResult['login'] = self.MyXml.getData(self.MyXml.getNode(self.MyXml.getNode(element, 'value'), 'string')[0]).lower()
+#             if dicResult['login'] == 'false':
+#                 if if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'reason':
+#                 dicResult['message'] = 
+        dicResult['caps_path'] = dicSimUser['caps_path']
+        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
 
         return dicResult
         
@@ -127,25 +206,20 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
         
     def xmlrpc_get_user_by_uuid(self, args):
         print 'get_user_by_uuid ',  args
+        
+        
         # response >custom_type profile_want_do  home_region_id >profile_created >profile_image >home_coordinates_x  profile_firstlife_image home_coordinates_y home_coordinates_z >server_asset home_look_x 
-        sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, regions.uuid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
+        sSql = "select to_char(profileWantDoMask,'99999999999' )as profile_want_do, homeregionid as home_region_id , to_char(users.created,'999999999999') as profile_created, "
         sSql += " profileImage as profile_image ,  to_char(homelocationx,'FM990.99999') as  home_coordinates_x,  to_char(homelocationy,'FM990.99999') as  home_coordinates_y,  to_char(homelocationz,'FM990.99999') as  home_coordinates_z, "
         sSql += " users.partner,  '' as server_asset,  to_char(profileCanDoMask,'FM99999999990') as profile_can_do,  users.uuid as uuid ,  users.username as firstname,  "
         sSql += " to_char(godlevel,'FM999990') as god_level, '' as   server_inventory,  to_char(userflags,'FM9999999999990') as user_flags,  profileabouttext as profile_about ,  "
         sSql += "to_char(homeregion,'FM9999999999999999990') as home_region,  profilefirsttext as profile_firstlife_about , "
         sSql += " to_char(homelookatx,'FM990.99999') as home_look_x, to_char(homelookaty,'FM990.99999') as home_look_y, to_char(homelookatz,'FM990.99999') as home_look_z "
-        sSql += " from users,  regions where users.uuid = '" + args['avatar_uuid'] + "' and regions.regionhandle = users.homeregion"
+        sSql += " from users  where users.uuid = '" + args['avatar_uuid'] + "' "
         dicUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
         print dicUser
         dicUser['custom_type'] = ' '
-        for key in dicUser:
-            try:
-                #very dirty
-                print dicUser[key]
-                dicUser[key] = dicUser[key].strip()
-            except:
-                pass
-        print 'after strip ',  dicUser        
+        dicUser = self.stripIt(dicUser)    
         return dicUser
         
     def xmlrpc_update_avatar_appearance(self, args):
@@ -162,8 +236,16 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc):
 
     def xmlrpc_get_agent_by_uuid(self, args):
         print 'get_agent_by_uuid ',  args
+        sSql = "select agents.sessionID as session,  to_char(currentHandle, '999999999999999999999') as handle,  'FALSE' as agent_online "
+        sSql += " from users, agents where users.uuid = '" + args['avatar_uuid']+ "' and agents.uuid = '" + args['avatar_uuid']+ "' "
         
-        
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        print "result = ",  result
+        if result and result not in self.liSQL_ERRORS:
+            return result[0]
+        else:
+            return {'agents.sessionID': self.NullKey}
+                            
     def getNewUUID(self):  
        
         return str(uuid.uuid4())
