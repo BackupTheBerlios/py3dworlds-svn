@@ -237,7 +237,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSQL += args['avatar_height'] + ", '" + args['body_item'] + "', '" + args['body_asset'] + "', " + args['skin_item'] + "', '"
         sSQL += args['skin_asset'] + "', '" + args['hair_item'] + "', '" + args['hair_asset'] + "', '" + args['eyes_item'] + "', '"
         sSQL += args['eyes_asset'] + "', '" + args['shirt_item'] + "', '" + args['shirt_asset'] + "', '" + args['pants_item'] + "', '"
-        sSQL += args['shoes_item'] + "', '" args['shoes_asset'] + "', '" + args['socks_item'] + "', '" + args['socks_asset'] + "', '"
+        sSQL += args['shoes_item'] + "', '" + args['shoes_asset'] + "', '" + args['socks_item'] + "', '" + args['socks_asset'] + "', '"
         sSQL += args['jacket_item'] + "', '" + args['jacket_asset'] + "', '" + args['gloves_item'] + "', '" + args['gloves_asset'] + "', '"
         sSQL += args['undershirt_item'] + "', '" + args['undershirt_asset'] + "', '" + args['underpants_item'] + "', '" + args['underpants_asset'] + "', '"
         sSQL += args['skirt_item'] + "', '" + args['skirt_asset'] + "')"
