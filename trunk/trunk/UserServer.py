@@ -1,6 +1,7 @@
 # coding=utf-8
 from twisted.web import xmlrpc
-from twisted.internet import reactor, defer
+#from twisted.internet import defer
+from twisted.internet.threads import deferToThread
 
 from databases.basics import basics
 import databases.DB_Com
@@ -8,6 +9,7 @@ import uuid
 from xmlrpc.xmlrpc import myXmlRpc
 from misc.usefullThings import usefullThings
 import regions.Region
+from time import sleep
 
 
 class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
@@ -64,9 +66,15 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 
 
     def xmlrpc_getTest(self):
+    
+        return deferToThread(self.getNumber)
+
+
+        
+    def getNumber(self):
+        sleep(10)
         return 42
         
-  
     def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
         sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
         sSql += " locx,  locy,  "
@@ -112,10 +120,10 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         
         return result[0]
     def xmlrpc_login_to_simulator(self, args):
-        print "Incoming --> ",   args
+        
         dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
         if dicResult not in ['NONE', 'ERROR', None]:
-            dicResult = self.informSim(dicResult)
+            return deferToThread( self.informSim,  dicResult)
             #self.informSim(dicResult)
             
 
