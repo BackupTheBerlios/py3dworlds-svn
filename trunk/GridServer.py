@@ -30,7 +30,7 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
         sSql = "insert into regions (uuid, serveruri,locx,locy, serverip, serverremotingport,regionrecvkey, regionsendkey , owner_uuid, " 
-        sSql += "serverHttpPort, regionSecret, regionName, regionHandle)values("  
+        sSql += "serverHttpPort, regionSecret, regionName, regionHandle,serverport)values("  
         sSql += "'" + uuid + "', " 
         sSql += "'" + args['server_uri'] + "', " 
         sSql += args['region_locx'] + ", " 
@@ -45,8 +45,8 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         sSql += "'" + args['region_secret']  + "', "
         sSql += "'" + args['sim_name']  + "',  "
         regionHandle =  self.convertTo(self.getRegionHandle(int(args['region_locx']), int( args['region_locy']) ), 'String') 
-        sSql +=  regionHandle + " "
-        #sSql += args['recvkey']  + ", "
+        sSql +=  regionHandle + " , "
+        sSql += args['sim_port']  + " "
         #sSql += args['recvkey']  + ", "
         #sSql += args['recvkey']  + ", "
 
@@ -61,7 +61,7 @@ class GridServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings,  Region):
         x = int(args['region_locx'])
         y = int(args['region_locy'])
         
-        sSql = "select locx,  locy , serverip as sim_ip, serverport as sim_port from regions where locx between  " + `x-1` + " and " + `x+1` 
+        sSql = "select locx,  locy , serverip as sim_ip, serverport as sim_port, serverhttpport as httpport from regions where locx between  " + `x-1` + " and " + `x+1` 
         sSql += " and  locy between " + `y-1` + " and " + `y+1` 
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
