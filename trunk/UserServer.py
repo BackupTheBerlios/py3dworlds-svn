@@ -78,16 +78,23 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def getLoginData(self, sUsername, sLastname, sPassword, sStartPosition):
         sSql = "select users.uuid as uuid, users.lastname as last_name,  users.username as first_name,  "
         sSql += " locx,  locy,  "
-        sSql += " to_char(users.homelocationx,'000.999999')  as homex, "
-        sSql += " to_char(users.homelocationy,'000.999999') as homey,  to_char(users.homelocationz,'000.999999') as homez , "
-        sSql += " to_char(users.homelookatx,'000.999999') as lookatx, to_char(users.homelookaty,'000.999999') as lookaty, "
-        sSql += " to_char(users.homelookatz,'000.999999') as lookatz,  "
-        sSql += " '[1, 0, 0]' as look_at , 'A' as agent_access_max,  regions.serveruri as serveruri, "
+       # sSql += " to_char(users.homelocationx,'000.999999')  as homex, "
+       # sSql += " to_char(users.homelocationy,'000.999999') as homey,  to_char(users.homelocationz,'000.999999') as homez , "
+       # sSql += " to_char(users.homelookatx,'000.999999') as lookatx, to_char(users.homelookaty,'000.999999') as lookaty, "
+       # sSql += " to_char(users.homelookatz,'000.999999') as lookatz,  "
+       # sSql += " '[1, 0, 0]' as look_at 
+       
+        sSql += " users.homelocationx  as homex, "
+        sSql += " users.homelocationy as homey , users.homelocationz as homez , "
+        sSql += " users.homelookatx as lookatx, users.homelookaty as lookaty, "
+        sSql += " users.homelookatz as lookatz,  "
+        
+        sSql += " '[1, 0, 0]' as look_at ,  'A' as agent_access_max,  regions.serveruri as serveruri, "
         sSql += "  1546967460 as circuit_code,  regions.owner_uuid , "
         sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
         sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
         sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
-        
+        sSql += " regions.serverip as sim_ip,  "
         sSql += " agents.securesessionid as secure_session_id,  agents.sessionid as session_id "
         sSql += " from users , regions, agents where users.username = '" + sUsername + "' and users.lastname = '" + sLastname + "' "
         sSql +=  " and agents.uuid = users.uuid and agents.currentregion = regions.uuid "
@@ -115,7 +122,20 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         print 'home = ',   result[0]['home']
         print 'region x = ',   result[0]['region_x']
         print 'region y = ',   result[0]['region_y']
+        result[0]['look_at'] = home['look_at']
+#        result[0]['lookatx'] = `round(result[0]['lookatx'], 6)`
+#        result[0]['lookaty'] = `round(result[0]['lookaty'], 6)`
+#        result[0]['lookatz'] = `round(result[0]['lookatz'], 6)`
+        del result[0]['lookatx']
+        del result[0]['lookaty']
+        del result[0]['lookatz']
         
+        del result[0]['homex']
+        del result[0]['homey']
+        del result[0]['homez']
+
+        result[0]['login'] = result[0]['login'] .encode()
+
         print 'regionhandle = ',   result[0]['regionhandle']
         
         return result[0]
@@ -128,7 +148,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
             return deferToThread( self.informSim,  dicResult)
             #self.informSim(dicResult)
             
-
+        
         return dicResult
         
     def informSim(self,  dicResult):
@@ -201,6 +221,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #                 dicResult['message'] = 
         dicResult['caps_path'] = dicSimUser['caps_path']
         dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
+        dicResult['circuit_code'] = dicSimUser['circuit_code']
         if dicResult['login'] == 'true':
             sSql = "select folderid as folder_id  from inventoryfolders where type = " + `self.InventoryRoot`
             sSql += " and agentid = '" + dicResult['agent_id'] + "'"
@@ -209,6 +230,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
             
             sSql = "select folderid as folder_id  ,  parentfolderid as parent_id,  foldername as foldername,  type , version"
             sSql += " from inventoryfolders  where agentid = '" + dicResult['agent_id'] + "'"
+            sSql += " and type >= 0 "
             sSql += " order by type "
             liInv = self.db_com.xmlrpc_executeNormalQuery(sSql)
             
@@ -308,32 +330,3 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #        ownerPerms1
 
         return dicResult
-    
-    def xmlrpc_simulator_data_request(self,  args):
-        print 'simulator_data_request',  args
-        
-        resultDict = {}
-
-        sSQL = "SELECT serverIP AS sim_ip, serverPort AS sim_port, serverURI AS server_uri, serverHttpPort "
-        sSQL += "AS http_port, serverRemotingPort AS remoting_port, locX AS region_locx, locY AS region_locy, "
-        sSQL += "uuid AS region_UUID, regionName AS region_name, regionHandle AS regionHandle "
-
-        if 'regionUUID' in args:
-            sSQL += "FROM regions WHERE uuid = '" + args['regionUUID'] + "'"
-        elif 'region_handle' in args:
-            sSQL += "FROM regions WHERE regionHandle = '" + args['region_handle'] + "'"
-        elif 'region_name_search' in args:
-            sSQL += "FROM regions WHERE regionName = '" + args['region_name_search'] + "'"
-        else:
-            print '[DATA] regionlookup without regionID, regionHandle or regionHame'
-
-        resultDict = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
-
-        if resultDict:
-            returnDict = resultDict
-        else:
-            returnDict = {'error' : 'Sim does not exist'}
-        
-        print 'xmlrpc_simulator_data_request, return',  returnDict
-        
-        return returnDict
