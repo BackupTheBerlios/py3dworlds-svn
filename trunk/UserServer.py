@@ -308,3 +308,32 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #        ownerPerms1
 
         return dicResult
+    
+    def xmlrpc_simulator_data_request(self,  args):
+        print 'simulator_data_request',  args
+        
+        resultDict = {}
+
+        sSQL = "SELECT serverIP AS sim_ip, serverPort AS sim_port, serverURI AS server_uri, serverHttpPort "
+        sSQL += "AS http_port, serverRemotingPort AS remoting_port, locX AS region_locx, locY AS region_locy, "
+        sSQL += "uuid AS region_UUID, regionName AS region_name, regionHandle AS regionHandle "
+
+        if 'regionUUID' in args:
+            sSQL += "FROM regions WHERE uuid = '" + args['regionUUID'] + "'"
+        elif 'region_handle' in args:
+            sSQL += "FROM regions WHERE regionHandle = '" + args['region_handle'] + "'"
+        elif 'region_name_search' in args:
+            sSQL += "FROM regions WHERE regionName = '" + args['region_name_search'] + "'"
+        else:
+            print '[DATA] regionlookup without regionID, regionHandle or regionHame'
+
+        resultDict = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+
+        if resultDict:
+            returnDict = resultDict
+        else:
+            returnDict = {'error' : 'Sim does not exist'}
+        
+        print 'xmlrpc_simulator_data_request, return',  returnDict
+        
+        return returnDict
