@@ -230,14 +230,14 @@ class DB_Com(xmlrpc.XMLRPC, SQL):
         sSql = "select tablename from pg_tables where tablename = '" + sName + "'"
         dicName = self.xmlrpc_executeNormalQuery(sSql, dicUser)
         ok = 0
-
+        print 'dicname = ',  dicName
         if dicName not in ['NONE','ERROR']:
             try:
                 ok = len(dicName)
             except:
                 ok = 0
 
-        return  ok
+        return ok
         
     def xmlrpc_checkExistColumn(self, sTableName, sColumnName, dicUser):
         sSql =  "select attname from pg_attribute where attrelid = ( select relfilenode from pg_class where relname = '" + sTableName +"')" 

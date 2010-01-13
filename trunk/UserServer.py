@@ -6,7 +6,7 @@ from twisted.internet.threads import deferToThread
 from databases.basics import basics
 import databases.DB_Com
 import uuid
-from xmlrpc.xmlrpc import myXmlRpc
+from xmlrpc.xmlrpc_special import myXmlRpc
 from misc.usefullThings import usefullThings
 import regions.Region
 from time import sleep
@@ -122,6 +122,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def xmlrpc_login_to_simulator(self, args):
         
         dicResult = self.getLoginData(args['first'],  args['last'], args['passwd'],  args['start'])
+        
+        
         if dicResult not in ['NONE', 'ERROR', None]:
             return deferToThread( self.informSim,  dicResult)
             #self.informSim(dicResult)
@@ -135,8 +137,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         self.server = 'http://cuonsim1.de:9300'
         # defaults for testing
         dicSimUser = {}
-        #sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
-        #dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+        sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
+        dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
                 
         dicSimUser['circuit_code'] = 105842181
         dicSimUser['regionhandle'] = dicResult['regionhandle']
@@ -199,7 +201,20 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #                 dicResult['message'] = 
         dicResult['caps_path'] = dicSimUser['caps_path']
         dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
-
+        if dicResult['login'] == 'true':
+            sSql = "select folderid as folder_id  from inventoryfolders where type = " + `self.InventoryRoot`
+            sSql += " and agentid = '" + dicResult['agent_id'] + "'"
+            dicRootInv = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+            dicResult['inventory-root'] = [dicRootInv]
+            
+            sSql = "select folderid as folder_id  ,  parentfolderid as parent_id,  foldername as foldername,  type , version"
+            sSql += " from inventoryfolders  where agentid = '" + dicResult['agent_id'] + "'"
+            sSql += " order by type "
+            liInv = self.db_com.xmlrpc_executeNormalQuery(sSql)
+            
+                
+            dicResult['inventory-skeleton'] = liInv
+        print dicResult
         return dicResult
         
         
@@ -273,3 +288,23 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
     def getNewUUID(self):  
        
         return str(uuid.uuid4())
+
+    def xmlrpc_get_user_friend_list(self,  args):
+        print 'get_user_friend_list',  args
+        
+        sSql = "select * from userfriends where ownerid = '"  + args['ownerID'] + "' "
+        liResult = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        z = 0
+        dicResult = {}
+        for row in liResult:
+            exec ("dicResult['friendPerms' + `z` ] = row['friendperms']")
+            exec ("dicResult['friendID' + `z` ] = row['friendid']")
+            exec ("dicResult['OwnerPerms' + `z` ] = row['ownerid']")
+            z += 1
+        print dicResult
+        
+#        friendPerms7
+#        friendID3
+#        ownerPerms1
+
+        return dicResult

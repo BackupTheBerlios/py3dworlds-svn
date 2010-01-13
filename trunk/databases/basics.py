@@ -11,10 +11,11 @@ import shelve
 import ConfigParser
 import bz2, base64
 import types
+from constants import constants
 
-
-class basics(xmlrpc.XMLRPC):
+class basics(xmlrpc.XMLRPC,  constants):
     def __init__(self):
+        constants.__init__(self)
         self.debug = 0
         self.DEBUG = False
         self.DEBUG_MODUS = 1

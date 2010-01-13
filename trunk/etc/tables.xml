@@ -1907,5 +1907,57 @@
     </field>
     </table>
     
+      
+      <table>
+    <nameOfTable>userfriends</nameOfTable>
+    <x>22</x>
+    <y>35</y>
+    
+    
+    <field>
+      <name>ownerID</name>
+      <type>varchar</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>36</size>
+      <default>'0000'</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>friendID</name>
+      <type>varchar</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>36</size>
+      <default>'0000'</default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>friendPerms</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>beginDate</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    </table>
     
 </database>

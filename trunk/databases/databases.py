@@ -329,10 +329,10 @@ class databases(constants,  basics):
 
 
     def dbcheck(self, table):
-        self.out("check Databases")
+        print "check Databases"
         #ok = self.rpc.callRP('src.Databases.py_packCuonFS')
         ok = self.rpc.callRP('Database.checkExistTable',table.getName(), self.dicUser)
-        self.out("ok = " + `ok`,1)
+        print  "Ok = " ,  `ok`
         
         if ok == 0:
             # create table

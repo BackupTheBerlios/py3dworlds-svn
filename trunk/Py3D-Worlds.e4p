@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project Py3D-Worlds -->
-<!-- Saved: 2010-01-12, 00:04:27 -->
+<!-- Saved: 2010-01-12, 17:55:36 -->
 <!-- Copyright (C) 2010 Jürgen Hamel, jhamel@cyrus-computer.de -->
 <Project version="4.6">
   <Language>en_US</Language>
@@ -38,13 +38,9 @@
     <Source>mainxmlrpc.py</Source>
     <Source>pl_server.py</Source>
     <Source>UserServer.py</Source>
-    <Source>misc/usefullThings.py</Source>
-    <Source>misc/__init__.py</Source>
     <Source>convertBlobs.py</Source>
     <Source>AssetServer.py</Source>
     <Source>InventoryServer.py</Source>
-    <Source>regions/Region.py</Source>
-    <Source>utils/Utils.py</Source>
   </Sources>
   <Forms>
   </Forms>
@@ -61,7 +57,6 @@
     <Other>etc/sql.xml</Other>
     <Other>etc/tables.xml</Other>
     <Other>dev_info/login_answers.txt</Other>
-    <Other>dev_info/xmlrpc_values.txt</Other>
   </Others>
   <MainScript>startServer.py</MainScript>
   <Vcs>
