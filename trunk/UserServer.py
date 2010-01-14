@@ -10,6 +10,7 @@ from xmlrpc.xmlrpc_special import myXmlRpc
 from misc.usefullThings import usefullThings
 import regions.Region
 from time import sleep
+import base64
 
 
 class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
@@ -90,7 +91,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSql += " users.homelookatz as lookatz,  "
         
         sSql += " '[1, 0, 0]' as look_at ,  'A' as agent_access_max,  regions.serveruri as serveruri, "
-        sSql += "  1546967460 as circuit_code,  regions.owner_uuid , "
+        sSql += "  1546967460 as circuit_code,  regions.owner_uuid , regions.serverhttpport as http_port, "
         sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
         sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
         sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
@@ -158,8 +159,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         # defaults for testing
         dicSimUser = {}
         sSql = "select * from avatarappearance where owner = '" + dicResult['uuid'] + "' "
-        dicSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
-                
+        liSimUser = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        if liSimUser and liSimUser not in self.liSQL_ERRORS:
+            dicSimUser = liSimUser[0]
+            dicSimUser['Visual_params'] = base64.decodestring(dicSimUser['Visual_params'] )
+
+            dicSimUser['texture'] = base64.decodestring(dicSimUser['texture'] )
+
         dicSimUser['circuit_code'] = 105842181
         dicSimUser['regionhandle'] = dicResult['regionhandle']
         dicSimUser['lastname'] = dicResult['last_name']
@@ -220,7 +226,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #                 if if  self.MyXml.getData(self.MyXml.getNode(element, 'name')[0]) == 'reason':
 #                 dicResult['message'] = 
         dicResult['caps_path'] = dicSimUser['caps_path']
-        dicResult['seed_capability'] = dicResult['serveruri'] + '/CAPS/' + dicResult['caps_path'] +'0000/'
+        dicResult['seed_capability'] = "http://" + dicResult['sim_ip'] +":"+`dicResult['http_port']` +  '/CAPS/' + dicResult['caps_path'] +'0000/'
+        dicResult['sim_ip'] ='85.214.139.187'
         dicResult['circuit_code'] = dicSimUser['circuit_code']
         if dicResult['login'] == 'true':
             sSql = "select folderid as folder_id  from inventoryfolders where type = " + `self.InventoryRoot`
@@ -270,7 +277,8 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSQL += "Skin_Asset, Hair_Item, Hair_Asset, Eyes_Item, Eyes_Asset, Shirt_Item, Shirt_Asset, Pants_Item, Pants_Asset, "
         sSQL += "Shoes_Item, Shoes_Asset, Socks_Item, Socks_Asset, Jacket_Item, Jacket_Asset, Gloves_Item, Gloves_Asset, "
         sSQL += "Undershirt_Item, Undershirt_Asset, Underpants_Item, Underpants_Asset, Skirt_Item, Skirt_Asset) VALUES ("
-        sSQL += "'" + args['owner'] + "', " + args['serial'] + ", '" + args['visual_params'] + "', '" + args['texture'] + "', "
+        sSQL += "'" + args['owner'] + "', "  + args['serial']  + ", " 
+        sSQL += "'" + base64.encodestring(`args['visual_params']`) + "', '" + base64.encodestring(`args['texture']`) + "', "
         sSQL += args['avatar_height'] + ", '" + args['body_item'] + "', '" + args['body_asset'] + "', " + args['skin_item'] + "', '"
         sSQL += args['skin_asset'] + "', '" + args['hair_item'] + "', '" + args['hair_asset'] + "', '" + args['eyes_item'] + "', '"
         sSQL += args['eyes_asset'] + "', '" + args['shirt_item'] + "', '" + args['shirt_asset'] + "', '" + args['pants_item'] + "', '"
@@ -278,7 +286,9 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSQL += args['jacket_item'] + "', '" + args['jacket_asset'] + "', '" + args['gloves_item'] + "', '" + args['gloves_asset'] + "', '"
         sSQL += args['undershirt_item'] + "', '" + args['undershirt_asset'] + "', '" + args['underpants_item'] + "', '" + args['underpants_asset'] + "', '"
         sSQL += args['skirt_item'] + "', '" + args['skirt_asset'] + "')"
-        sql_result_insert = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        print "sSql = ",  sSQL
+        
+        sql_result_insert = self.db_com.xmlrpc_executeNormalQuery(sSQL)
         print 'update_avatar_appearance SQL-insert rersult', sql_result_insert
 
         dicResult = {'returnString' : 'TRUE'}
