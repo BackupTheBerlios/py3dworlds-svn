@@ -1,0 +1,510 @@
+interface: eth0 (85.214.139.187/255.255.255.255)
+filter: (ip or ip6) and ( dst sim-linuxmain.org )
+###
+T 85.214.139.187:9300 -> 85.214.47.28:59138 [AP]
+  HTTP/1.0 100 Please continue mate.....                                     
+###
+T 85.214.139.187:53891 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 387..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>check_auth_session</methodName><params><param><value
+  ><struct><member><name>session_id</name><value><string>178bc3f1-4a7a-15d5-b
+  15a-6efa6dbe4f2b</string></value></member><member><name>avatar_uuid</name><
+  value><string>fb65174f-2dde-4c1e-ba13-1a776d6864fd</string></value></member
+  ></struct></value></param></params></methodCall>                           
+######
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 277..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>get_user_by_uuid</methodName><params><param><value><
+  struct><member><name>avatar_uuid</name><value><string>fb65174f-2dde-4c1e-ba
+  13-1a776d6864fd</string></value></member></struct></value></param></params>
+  </methodCall>                                                              
+########
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 278..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>get_agent_by_uuid</methodName><params><param><value>
+  <struct><member><name>avatar_uuid</name><value><string>fb65174f-2dde-4c1e-b
+  a13-1a776d6864fd</string></value></member></struct></value></param></params
+  ></methodCall>                                                             
+####
+T 85.214.139.187:9300 -> 85.214.47.28:59138 [AP]
+  HTTP/1.1 200 OK..Date: Thu, 14 Jan 2010 14:30:35 GMT..Content-Length: 427..
+  Content-Type: text/xml..Server: Tiny WebServer..Keep-Alive: timeout=20, max
+  =400..Connection: Keep-Alive....                                           
+#
+T 85.214.139.187:9300 -> 85.214.47.28:59138 [AP]
+  <?xml version="1.0"?>.<methodResponse>.    <params>.        <param>.       
+       <value>.                <struct>.                    <member>.        
+                  <name>success</name>.                        <value>.      
+                        <string>TRUE</string>.                        </value
+  >.                    </member>.                </struct>.            </val
+  ue>.        </param>.    </params>.</methodResponse>                       
+###
+T 85.214.139.187:40992 -> 85.214.47.28:8004 [AP]
+  POST /QueryItem/ HTTP/1.0..Content-Type: text/xml..Content-Length: 1148..Co
+  nnection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1.0
+  " encoding="utf-8"?><RestSessionObjectOfInventoryItemBase xmlns:xsi="http:/
+  /www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLS
+  chema"><SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID
+  >fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body><Name /><ID><Guid>249
+  df9d4-5590-4ade-ab7a-c465a615b09f</Guid></ID><Owner><Guid>fb65174f-2dde-4c1
+  e-ba13-1a776d6864fd</Guid></Owner><InvType>0</InvType><Folder><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></Folder><CreatorIdAsUuid><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></CreatorIdAsUuid><Description /><NextP
+  ermissions>0</NextPermissions><CurrentPermissions>0</CurrentPermissions><Ba
+  sePermissions>0</BasePermissions><EveryOnePermissions>0</EveryOnePermission
+  s><GroupPermissions>0</GroupPermissions><AssetType>0</AssetType><AssetID><G
+  uid>00000000-0000-0000-0000-000000000000</Guid></AssetID><GroupID><Guid>000
+  00000-0000-0000-0000-000000000000</Guid></GroupID><GroupOwned>false</GroupO
+  wned><SalePrice>0</SalePrice><SaleType>0</SaleType><Flags>0</Flags><Creatio
+  nDate>1263475839</CreationDate></Body></RestSessionObjectOfInventoryItemBas
+  e>                                                                         
+######
+T 85.214.139.187:40993 -> 85.214.47.28:8004 [AP]
+  POST /QueryItem/ HTTP/1.0..Content-Type: text/xml..Content-Length: 1148..Co
+  nnection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1.0
+  " encoding="utf-8"?><RestSessionObjectOfInventoryItemBase xmlns:xsi="http:/
+  /www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLS
+  chema"><SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID
+  >fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body><Name /><ID><Guid>249
+  df9d4-5590-4ade-ab7a-c465a615b09f</Guid></ID><Owner><Guid>fb65174f-2dde-4c1
+  e-ba13-1a776d6864fd</Guid></Owner><InvType>0</InvType><Folder><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></Folder><CreatorIdAsUuid><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></CreatorIdAsUuid><Description /><NextP
+  ermissions>0</NextPermissions><CurrentPermissions>0</CurrentPermissions><Ba
+  sePermissions>0</BasePermissions><EveryOnePermissions>0</EveryOnePermission
+  s><GroupPermissions>0</GroupPermissions><AssetType>0</AssetType><AssetID><G
+  uid>00000000-0000-0000-0000-000000000000</Guid></AssetID><GroupID><Guid>000
+  00000-0000-0000-0000-000000000000</Guid></GroupID><GroupOwned>false</GroupO
+  wned><SalePrice>0</SalePrice><SaleType>0</SaleType><Flags>0</Flags><Creatio
+  nDate>1263475839</CreationDate></Body></RestSessionObjectOfInventoryItemBas
+  e>                                                                         
+###
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [A]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 4168..Expect: 100-
+  continue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?>
+  <methodCall><methodName>update_avatar_appearance</methodName><params><param
+  ><value><struct><member><name>owner</name><value><string>fb65174f-2dde-4c1e
+  -ba13-1a776d6864fd</string></value></member><member><name>body_asset</name>
+  <value><string>41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1</string></value></membe
+  r><member><name>shirt_item</name><value><string>77c41e39-38f9-f75a-0000-585
+  989bf0000</string></value></member><member><name>pants_asset</name><value><
+  string>00000000-38f9-1111-024e-222222111120</string></value></member><membe
+  r><name>undershirt_item</name><value><string>00000000-0000-0000-0000-000000
+  000000</string></value></member><member><name>gloves_item</name><value><str
+  ing>00000000-0000-0000-0000-000000000000</string></value></member><member><
+  name>texture</name><value><base64>wijRz0tdS6iE9ImaB5aqlwEAAAAAAAAREZmZAAAAA
+  AASAldI3sz2KUYcmjajWiIf4h8EV0jezPYpRhyaNqNaIh/iHwgvn6MbjMRPr764yPkShMijEAdQ
+  dZtq5kpAq2qsNRhs9CYgAAAAAAAAERGZmQAAAAAAEEAAAAAAAAAREZmZAAAAAAARggB7Wnmv5fi
+  HsfEmohXZEjoDhABIJrqxNJkxmsQ3m9X1IxlIiABp1YdPhQrkM5Tm3wg8nmVakABlmoQG0kARoa
+  kyH4QfxLlNAAAAAAAAAACAPwAAAIA/AAAAAAAAAAAAAAAAAAAA</base64></value></member
+  ><member><name>serial</name><value><string>25</string></value></member><mem
+  ber><name>hair_asset</name><value><string>94494701-c3b7-4458-9ac6-d2e901908
+  196</string></value></member><member><name>jacket_asset</name><value><strin
+  g>00000000-0000-0000-0000-000000000000</string></value></member><member><na
+  me>hair_item</name><value><string>2cb05c88-1cbb-4ed6-9082-6edadab42b16</str
+  ing></value></member><member><name>pants_item</name><value><string>77c41e39
+  -38f9-f75a-0000-5859892f1111</string></value></member><member><name>shoes_i
+  tem</name><value><string>00000000-0000-0000-0000-000000000000</string></val
+  ue></member><member><name>gloves_asset</name><value><string>00000000-0000-0
+  000-0000-000000000000</string></value></member><member><name>underpants_ass
+  et</name><value><string>00000000-0000-0000-0000-000000000000</string></valu
+  e></member><member><name>visual_params</name><value><base64>TAB/OX+CRGYZGSh
+  /f11/AH8zf1kAf39/XuUwTJl/sv/L/wB/AAAAAEQAAAD/AAAAAABtd7J/MwAAmwA/DAAAAAAAAA
+  AAXkwZABkAf2YAAH9mAFV/fwA+M2TY1szMzDMZWUzMAAAAAH+ObX9/MwB/WX9/f3yEZky/qoMvf
+  2aOfwKNQgAAf38AAAAAfwCfAAAAfzNemz/Mf3+ZTABMAH9/ANbMxgAATBl/pdHGf3+ZzDMz////
+  zAD//////////////wD//////wB/f/8ZZP////9UAAAAZn////8=</base64></value></memb
+  er><member><name>eyes_asset</name><value><string>fc5bc178-d5a5-4be1-9f74-a7
+  02860987d7</string></value></member><member><name>shirt_asset</name><value>
+  <string>00000000-38f9-1111-024e-222222111110</string></value></member><memb
+  er><name>jacket_item</name><value><string>00000000-0000-0000-0000-000000000
+  000</string></value></member><member><name>skin_item</name><value><string>7
+  7c41e39-38f9-f75a-024e-585989bfabc9</string></                             
+#
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [AP]
+  value></member><member><name>undershirt_asset</name><value><string>00000000
+  -0000-0000-0000-000000000000</string></value></member><member><name>skin_as
+  set</name><value><string>77c41e39-38f9-f75a-024e-585989bbabbb</string></val
+  ue></member><member><name>skirt_item</name><value><string>00000000-0000-000
+  0-0000-000000000000</string></value></member><member><name>eyes_item</name>
+  <value><string>714af98c-0227-4e01-ab5b-76fc706634e0</string></value></membe
+  r><member><name>skirt_asset</name><value><string>00000000-0000-0000-0000-00
+  0000000000</string></value></member><member><name>shoes_asset</name><value>
+  <string>00000000-0000-0000-0000-000000000000</string></value></member><memb
+  er><name>underpants_item</name><value><string>00000000-0000-0000-0000-00000
+  0000000</string></value></member><member><name>avatar_height</name><value><
+  string>1.97574</string></value></member><member><name>socks_asset</name><va
+  lue><string>00000000-0000-0000-0000-000000000000</string></value></member><
+  member><name>socks_item</name><value><string>00000000-0000-0000-0000-000000
+  000000</string></value></member><member><name>attachments</name><value><str
+  ing>2,249df9d4-5590-4ade-ab7a-c465a615b09f,a4d9eaff-289a-4aa2-a27c-052222b3
+  e1d7</string></value></member><member><name>body_item</name><value><string>
+  3019b483-ae74-40c3-9450-ec0fb8ed203c</string></value></member></struct></va
+  lue></param></params></methodCall>                                         
+#######
+T 85.214.139.187:40994 -> 85.214.47.28:8004 [AP]
+  POST /QueryItem/ HTTP/1.0..Content-Type: text/xml..Content-Length: 1148..Co
+  nnection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1.0
+  " encoding="utf-8"?><RestSessionObjectOfInventoryItemBase xmlns:xsi="http:/
+  /www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLS
+  chema"><SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID
+  >fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body><Name /><ID><Guid>249
+  df9d4-5590-4ade-ab7a-c465a615b09f</Guid></ID><Owner><Guid>fb65174f-2dde-4c1
+  e-ba13-1a776d6864fd</Guid></Owner><InvType>0</InvType><Folder><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></Folder><CreatorIdAsUuid><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></CreatorIdAsUuid><Description /><NextP
+  ermissions>0</NextPermissions><CurrentPermissions>0</CurrentPermissions><Ba
+  sePermissions>0</BasePermissions><EveryOnePermissions>0</EveryOnePermission
+  s><GroupPermissions>0</GroupPermissions><AssetType>0</AssetType><AssetID><G
+  uid>00000000-0000-0000-0000-000000000000</Guid></AssetID><GroupID><Guid>000
+  00000-0000-0000-0000-000000000000</Guid></GroupID><GroupOwned>false</GroupO
+  wned><SalePrice>0</SalePrice><SaleType>0</SaleType><Flags>0</Flags><Creatio
+  nDate>1263475839</CreationDate></Body></RestSessionObjectOfInventoryItemBas
+  e>                                                                         
+###
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [A]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 4168..Expect: 100-
+  continue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?>
+  <methodCall><methodName>update_avatar_appearance</methodName><params><param
+  ><value><struct><member><name>owner</name><value><string>fb65174f-2dde-4c1e
+  -ba13-1a776d6864fd</string></value></member><member><name>body_asset</name>
+  <value><string>41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1</string></value></membe
+  r><member><name>shirt_item</name><value><string>77c41e39-38f9-f75a-0000-585
+  989bf0000</string></value></member><member><name>pants_asset</name><value><
+  string>00000000-38f9-1111-024e-222222111120</string></value></member><membe
+  r><name>undershirt_item</name><value><string>00000000-0000-0000-0000-000000
+  000000</string></value></member><member><name>gloves_item</name><value><str
+  ing>00000000-0000-0000-0000-000000000000</string></value></member><member><
+  name>texture</name><value><base64>wijRz0tdS6iE9ImaB5aqlwEAAAAAAAAREZmZAAAAA
+  AASAldI3sz2KUYcmjajWiIf4h8EV0jezPYpRhyaNqNaIh/iHwgvn6MbjMRPr764yPkShMijEAdQ
+  dZtq5kpAq2qsNRhs9CYgAAAAAAAAERGZmQAAAAAAEEAAAAAAAAAREZmZAAAAAAARggB7Wnmv5fi
+  HsfEmohXZEjoDhABIJrqxNJkxmsQ3m9X1IxlIiABp1YdPhQrkM5Tm3wg8nmVakABlmoQG0kARoa
+  kyH4QfxLlNAAAAAAAAAACAPwAAAIA/AAAAAAAAAAAAAAAAAAAA</base64></value></member
+  ><member><name>serial</name><value><string>25</string></value></member><mem
+  ber><name>hair_asset</name><value><string>94494701-c3b7-4458-9ac6-d2e901908
+  196</string></value></member><member><name>jacket_asset</name><value><strin
+  g>00000000-0000-0000-0000-000000000000</string></value></member><member><na
+  me>hair_item</name><value><string>2cb05c88-1cbb-4ed6-9082-6edadab42b16</str
+  ing></value></member><member><name>pants_item</name><value><string>77c41e39
+  -38f9-f75a-0000-5859892f1111</string></value></member><member><name>shoes_i
+  tem</name><value><string>00000000-0000-0000-0000-000000000000</string></val
+  ue></member><member><name>gloves_asset</name><value><string>00000000-0000-0
+  000-0000-000000000000</string></value></member><member><name>underpants_ass
+  et</name><value><string>00000000-0000-0000-0000-000000000000</string></valu
+  e></member><member><name>visual_params</name><value><base64>TAB/OX+CRGYZGSh
+  /f11/AH8zf1kAf39/XuUwTJl/sv/L/wB/AAAAAEQAAAD/AAAAAABtd7J/MwAAmwA/DAAAAAAAAA
+  AAXkwZABkAf2YAAH9mAFV/fwA+M2TY1szMzDMZWUzMAAAAAH+ObX9/MwB/WX9/f3yEZky/qoMvf
+  2aOfwKNQgAAf38AAAAAfwCfAAAAfzNemz/Mf3+ZTABMAH9/ANbMxgAATBl/pdHGf3+ZzDMz////
+  zAD//////////////wD//////wB/f/8ZZP////9UAAAAZn////8=</base64></value></memb
+  er><member><name>eyes_asset</name><value><string>fc5bc178-d5a5-4be1-9f74-a7
+  02860987d7</string></value></member><member><name>shirt_asset</name><value>
+  <string>00000000-38f9-1111-024e-222222111110</string></value></member><memb
+  er><name>jacket_item</name><value><string>00000000-0000-0000-0000-000000000
+  000</string></value></member><member><name>skin_item</name><value><string>7
+  7c41e39-38f9-f75a-024e-585989bfabc9</string></                             
+#
+T 85.214.139.187:53892 -> 85.214.47.28:8002 [AP]
+  value></member><member><name>undershirt_asset</name><value><string>00000000
+  -0000-0000-0000-000000000000</string></value></member><member><name>skin_as
+  set</name><value><string>77c41e39-38f9-f75a-024e-585989bbabbb</string></val
+  ue></member><member><name>skirt_item</name><value><string>00000000-0000-000
+  0-0000-000000000000</string></value></member><member><name>eyes_item</name>
+  <value><string>714af98c-0227-4e01-ab5b-76fc706634e0</string></value></membe
+  r><member><name>skirt_asset</name><value><string>00000000-0000-0000-0000-00
+  0000000000</string></value></member><member><name>shoes_asset</name><value>
+  <string>00000000-0000-0000-0000-000000000000</string></value></member><memb
+  er><name>underpants_item</name><value><string>00000000-0000-0000-0000-00000
+  0000000</string></value></member><member><name>avatar_height</name><value><
+  string>1.97574</string></value></member><member><name>socks_asset</name><va
+  lue><string>00000000-0000-0000-0000-000000000000</string></value></member><
+  member><name>socks_item</name><value><string>00000000-0000-0000-0000-000000
+  000000</string></value></member><member><name>attachments</name><value><str
+  ing>2,249df9d4-5590-4ade-ab7a-c465a615b09f,a4d9eaff-289a-4aa2-a27c-052222b3
+  e1d7</string></value></member><member><name>body_item</name><value><string>
+  3019b483-ae74-40c3-9450-ec0fb8ed203c</string></value></member></struct></va
+  lue></param></params></methodCall>                                         
+######
+T 85.214.139.187:36819 -> 85.214.47.28:8006 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 470..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8006....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>agent_location</methodName><params><param><value><st
+  ruct><member><name>RegionHandle</name><value><string>11006111396599296</str
+  ing></value></member><member><name>AgentID</name><value><string>fb65174f-2d
+  de-4c1e-ba13-1a776d6864fd</string></value></member><member><name>RegionUUID
+  </name><value><string>2af87220-9c0d-4e1f-b15e-378a9a6c2a74</string></value>
+  </member></struct></value></param></params></methodCall>                   
+#######
+T 85.214.139.187:40996 -> 85.214.47.28:8004 [AP]
+  POST /SystemFolders/ HTTP/1.0..Content-Type: text/xml..Content-Length: 356.
+  .Connection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="
+  1.0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3.or
+  g/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Se
+  ssionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID>fb65174f-
+  2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>fb65174f-2dde-4c1e-ba13-1a776d6
+  864fd</Body></RestSessionObjectOfGuid>                                     
+######
+T 85.214.139.187:40998 -> 85.214.47.28:8004 [AP]
+  POST /GetInventory/ HTTP/1.0..Content-Type: text/xml..Content-Length: 356..
+  Connection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1
+  .0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3.org
+  /2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Ses
+  sionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID>fb65174f-2
+  dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>fb65174f-2dde-4c1e-ba13-1a776d68
+  64fd</Body></RestSessionObjectOfGuid>                                      
+##############################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
+T 85.214.139.187:40999 -> 85.214.47.28:8004 [AP]
+  POST /QueryFolder/ HTTP/1.0..Content-Type: text/xml..Content-Length: 584..C
+  onnection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1.
+  0" encoding="utf-8"?><RestSessionObjectOfInventoryFolderBase xmlns:xsi="htt
+  p://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/X
+  MLSchema"><SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><Avata
+  rID>fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body><Name /><ID><Guid>
+  3e1a8134-f9d7-40a1-9a01-7fff99ac8536</Guid></ID><Owner><Guid>fb65174f-2dde-
+  4c1e-ba13-1a776d6864fd</Guid></Owner><ParentID><Guid>00000000-0000-0000-000
+  0-000000000000</Guid></ParentID><Type>0</Type><Version>0</Version></Body></
+  RestSessionObjectOfInventoryFolderBase>                                    
+####
+T 85.214.139.187:34464 -> 85.214.47.28:8001 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 413..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8001....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>map_block</methodName><params><param><value><struct>
+  <member><name>xmin</name><value><i4>10009</i4></value></member><member><nam
+  e>ymin</name><value><i4>10005</i4></value></member><member><name>xmax</name
+  ><value><i4>10011</i4></value></member><member><name>ymax</name><value><i4>
+  10007</i4></value></member></struct></value></param></params></methodCall> 
+############################
+T 85.214.139.187:36825 -> 85.214.47.28:8006 [A]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 1488..Expect: 100-
+  continue..Host: 85.214.47.28:8006....<?xml version="1.0" encoding="utf-8"?>
+  <methodCall><methodName>get_presence_info_bulk</methodName><params><param><
+  value><struct><member><name>uuids</name><value><array><data><value><string>
+  105d84c7-7604-476e-ab47-6b654d275b37</string></value><value><string>105d84c
+  7-7604-476e-ab47-6b654d275b37</string></value><value><string>152e038a-62aa-
+  4b5e-a96a-e9bd8c500139</string></value><value><string>152e038a-62aa-4b5e-a9
+  6a-e9bd8c500139</string></value><value><string>3ac7dbe2-8d16-4219-ba53-9b6f
+  afa2fc50</string></value><value><string>3ac7dbe2-8d16-4219-ba53-9b6fafa2fc5
+  0</string></value><value><string>3baa5f8c-ede3-4027-932a-9317446e2168</stri
+  ng></value><value><string>3baa5f8c-ede3-4027-932a-9317446e2168</string></va
+  lue><value><string>540adaf9-c146-4264-a747-a4a7cf6bc9f3</string></value><va
+  lue><string>540adaf9-c146-4264-a747-a4a7cf6bc9f3</string></value><value><st
+  ring>567411eb-cc81-4006-b36a-af8a336157b7</string></value><value><string>56
+  7411eb-cc81-4006-b36a-af8a336157b7</string></value><value><string>796eeed0-
+  a8e6-4529-8b33-5cfe84aa7794</string></value><value><string>796eeed0-a8e6-45
+  29-8b33-5cfe84aa7794</string></value><value><string>b44098fd-834f-4e1d-8a98
+  -827c8c802f6b</string></value><value><string>b44098fd-834f-4e1d-8a98-827c8c
+  802f6b</string></value></data></array></value></member><member><name>send_k
+  ey</name><value><string                                                    
+#
+T 85.214.139.187:36825 -> 85.214.47.28:8006 [AP]
+  >1234</string></value></member><member><name>recv_key</name><value><string>
+  1234</string></value></member></struct></value></param></params></methodCal
+  l>                                                                         
+##########
+T 85.214.139.187:53913 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 277..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>get_user_by_uuid</methodName><params><param><value><
+  struct><member><name>avatar_uuid</name><value><string>540adaf9-c146-4264-a7
+  47-a4a7cf6bc9f3</string></value></member></struct></value></param></params>
+  </methodCall>                                                              
+#####
+T 85.214.139.187:53913 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 387..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>check_auth_session</methodName><params><param><value
+  ><struct><member><name>session_id</name><value><string>178bc3f1-4a7a-15d5-b
+  15a-6efa6dbe4f2b</string></value></member><member><name>avatar_uuid</name><
+  value><string>fb65174f-2dde-4c1e-ba13-1a776d6864fd</string></value></member
+  ></struct></value></param></params></methodCall>                           
+##
+T 85.214.139.187:53915 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 387..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>check_auth_session</methodName><params><param><value
+  ><struct><member><name>session_id</name><value><string>178bc3f1-4a7a-15d5-b
+  15a-6efa6dbe4f2b</string></value></member><member><name>avatar_uuid</name><
+  value><string>fb65174f-2dde-4c1e-ba13-1a776d6864fd</string></value></member
+  ></struct></value></param></params></methodCall>                           
+######
+T 85.214.139.187:53917 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 387..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>check_auth_session</methodName><params><param><value
+  ><struct><member><name>session_id</name><value><string>178bc3f1-4a7a-15d5-b
+  15a-6efa6dbe4f2b</string></value></member><member><name>avatar_uuid</name><
+  value><string>fb65174f-2dde-4c1e-ba13-1a776d6864fd</string></value></member
+  ></struct></value></param></params></methodCall>                           
+#########
+T 85.214.139.187:53918 -> 85.214.47.28:8002 [A]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 4169..Expect: 100-
+  continue..Host: 85.214.47.28:8002....<?xml version="1.0" encoding="utf-8"?>
+  <methodCall><methodName>update_avatar_appearance</methodName><params><param
+  ><value><struct><member><name>owner</name><value><string>fb65174f-2dde-4c1e
+  -ba13-1a776d6864fd</string></value></member><member><name>body_asset</name>
+  <value><string>41b97b3e-718a-441f-bbc1-b1cc1dc1c9a1</string></value></membe
+  r><member><name>shirt_item</name><value><string>77c41e39-38f9-f75a-0000-585
+  989bf0000</string></value></member><member><name>pants_asset</name><value><
+  string>00000000-38f9-1111-024e-222222111120</string></value></member><membe
+  r><name>undershirt_item</name><value><string>00000000-0000-0000-0000-000000
+  000000</string></value></member><member><name>gloves_item</name><value><str
+  ing>00000000-0000-0000-0000-000000000000</string></value></member><member><
+  name>texture</name><value><base64>wijRz0tdS6iE9ImaB5aqlwEAAAAAAAAREZmZAAAAA
+  AASAldI3sz2KUYcmjajWiIf4h8EV0jezPYpRhyaNqNaIh/iHwgvn6MbjMRPr764yPkShMijEAdQ
+  dZtq5kpAq2qsNRhs9CYgAAAAAAAAERGZmQAAAAAAEEAAAAAAAAAREZmZAAAAAAARggB7Wnmv5fi
+  HsfEmohXZEjoDhABIJrqxNJkxmsQ3m9X1IxlIiABp1YdPhQrkM5Tm3wg8nmVakABlmoQG0kARoa
+  kyH4QfxLlNAAAAAAAAAACAPwAAAIA/AAAAAAAAAAAAAAAAAAAA</base64></value></member
+  ><member><name>serial</name><value><string>26</string></value></member><mem
+  ber><name>hair_asset</name><value><string>94494701-c3b7-4458-9ac6-d2e901908
+  196</string></value></member><member><name>jacket_asset</name><value><strin
+  g>00000000-0000-0000-0000-000000000000</string></value></member><member><na
+  me>hair_item</name><value><string>2cb05c88-1cbb-4ed6-9082-6edadab42b16</str
+  ing></value></member><member><name>pants_item</name><value><string>77c41e39
+  -38f9-f75a-0000-5859892f1111</string></value></member><member><name>shoes_i
+  tem</name><value><string>00000000-0000-0000-0000-000000000000</string></val
+  ue></member><member><name>gloves_asset</name><value><string>00000000-0000-0
+  000-0000-000000000000</string></value></member><member><name>underpants_ass
+  et</name><value><string>00000000-0000-0000-0000-000000000000</string></valu
+  e></member><member><name>visual_params</name><value><base64>TAB/OX+CRGYZGSh
+  /f11/AH8zf1kAf39/XuUwTJl/sv/L/wB/AAAAAEQAAAD/AAAAAABtd7J/MwAAmwA/DAAAAAAAAA
+  AAXkwZABkAf2YAAH9mAFV/fwA+M2TY1szMzDMZWUzMAAAAAH+ObX9/MwB/WX9/f3yEZky/qoMvf
+  2aOfwKNQgAAf38AAAAAfwCfAAAAfzNemz/Mf3+ZTABMAH9/ANbMxgAATBl/pdHGf3+ZzDMz////
+  zAD//////////////wD//////wB/f/8ZZP////9UAAAAZn////8=</base64></value></memb
+  er><member><name>eyes_asset</name><value><string>fc5bc178-d5a5-4be1-9f74-a7
+  02860987d7</string></value></member><member><name>shirt_asset</name><value>
+  <string>00000000-38f9-1111-024e-222222111110</string></value></member><memb
+  er><name>jacket_item</name><value><string>00000000-0000-0000-0000-000000000
+  000</string></value></member><member><name>skin_item</name><value><string>7
+  7c41e39-38f9-f75a-024e-585989bfabc9</string></                             
+#
+T 85.214.139.187:53918 -> 85.214.47.28:8002 [AP]
+  value></member><member><name>undershirt_asset</name><value><string>00000000
+  -0000-0000-0000-000000000000</string></value></member><member><name>skin_as
+  set</name><value><string>77c41e39-38f9-f75a-024e-585989bbabbb</string></val
+  ue></member><member><name>skirt_item</name><value><string>00000000-0000-000
+  0-0000-000000000000</string></value></member><member><name>eyes_item</name>
+  <value><string>714af98c-0227-4e01-ab5b-76fc706634e0</string></value></membe
+  r><member><name>skirt_asset</name><value><string>00000000-0000-0000-0000-00
+  0000000000</string></value></member><member><name>shoes_asset</name><value>
+  <string>00000000-0000-0000-0000-000000000000</string></value></member><memb
+  er><name>underpants_item</name><value><string>00000000-0000-0000-0000-00000
+  0000000</string></value></member><member><name>avatar_height</name><value><
+  string>1.975739</string></value></member><member><name>socks_asset</name><v
+  alue><string>00000000-0000-0000-0000-000000000000</string></value></member>
+  <member><name>socks_item</name><value><string>00000000-0000-0000-0000-00000
+  0000000</string></value></member><member><name>attachments</name><value><st
+  ring>2,249df9d4-5590-4ade-ab7a-c465a615b09f,a4d9eaff-289a-4aa2-a27c-052222b
+  3e1d7</string></value></member><member><name>body_item</name><value><string
+  >3019b483-ae74-40c3-9450-ec0fb8ed203c</string></value></member></struct></v
+  alue></param></params></methodCall>                                        
+#######
+T 85.214.139.187:41008 -> 85.214.47.28:8004 [AP]
+  POST /QueryItem/ HTTP/1.0..Content-Type: text/xml..Content-Length: 1148..Co
+  nnection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1.0
+  " encoding="utf-8"?><RestSessionObjectOfInventoryItemBase xmlns:xsi="http:/
+  /www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLS
+  chema"><SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID
+  >fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body><Name /><ID><Guid>301
+  9b483-ae74-40c3-9450-ec0fb8ed203c</Guid></ID><Owner><Guid>fb65174f-2dde-4c1
+  e-ba13-1a776d6864fd</Guid></Owner><InvType>0</InvType><Folder><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></Folder><CreatorIdAsUuid><Guid>0000000
+  0-0000-0000-0000-000000000000</Guid></CreatorIdAsUuid><Description /><NextP
+  ermissions>0</NextPermissions><CurrentPermissions>0</CurrentPermissions><Ba
+  sePermissions>0</BasePermissions><EveryOnePermissions>0</EveryOnePermission
+  s><GroupPermissions>0</GroupPermissions><AssetType>0</AssetType><AssetID><G
+  uid>00000000-0000-0000-0000-000000000000</Guid></AssetID><GroupID><Guid>000
+  00000-0000-0000-0000-000000000000</Guid></GroupID><GroupOwned>false</GroupO
+  wned><SalePrice>0</SalePrice><SaleType>0</SaleType><Flags>0</Flags><Creatio
+  nDate>1263475857</CreationDate></Body></RestSessionObjectOfInventoryItemBas
+  e>                                                                         
+###
+T 85.214.139.187:41009 -> 85.214.47.28:8004 [AP]
+  POST /GetFolderContent/ HTTP/1.0..Content-Type: text/xml..Content-Length: 3
+  56..Connection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml versio
+  n="1.0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3
+  .org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SessionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID>fb6517
+  4f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>00000000-0000-0000-0000-0000
+  00000000</Body></RestSessionObjectOfGuid>                                  
+#####
+T 85.214.139.187:41010 -> 85.214.47.28:8004 [AP]
+  POST /GetInventory/ HTTP/1.0..Content-Type: text/xml..Content-Length: 356..
+  Connection: keep-alive..Host: sim-linuxmain.org:8004.......<?xml version="1
+  .0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3.org
+  /2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Ses
+  sionID>178bc3f1-4a7a-15d5-b15a-6efa6dbe4f2b</SessionID><AvatarID>fb65174f-2
+  dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>fb65174f-2dde-4c1e-ba13-1a776d68
+  64fd</Body></RestSessionObjectOfGuid>                                      
+#####
+T 85.214.139.187:50238 -> 85.214.47.28:8003 [AP]
+  GET /assets/7b5a79af-e5f8-87b1-f126-a215d9123a03 HTTP/1.1..Host: sim-linuxm
+  ain.org:8003....                                                           
+#####
+T 85.214.139.187:50242 -> 85.214.47.28:8003 [AP]
+  GET /assets/1d03ad8c-2d4b-4b28-be0f-c2ac044a482a HTTP/1.1..Host: sim-linuxm
+  ain.org:8003....                                                           
+##################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
+T 85.214.139.187:39327 -> 85.214.47.28:8003 [AP]
+  GET /assets/0be4aa45-5ef7-44f5-b630-e0dcdca767ba HTTP/1.1..Connection: keep
+  -alive..Host: sim-linuxmain.org:8003....                                   
+######
+T 85.214.139.187:39371 -> 85.214.47.28:8003 [AP]
+  GET /assets/0fc81d36-1c28-4a26-995c-9d56b5042d61 HTTP/1.1..Host: sim-linuxm
+  ain.org:8003....                                                           
+#####
+T 85.214.139.187:50601 -> 85.214.47.28:8002 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 956..Expect: 100-c
+  ontinue..Connection: keep-alive..Host: 85.214.47.28:8002....<?xml version="
+  1.0" encoding="utf-8"?><methodCall><methodName>logout_of_simulator</methodN
+  ame><params><param><value><struct><member><name>lookat_y</name><value><stri
+  ng>0.6125709</string></value></member><member><name>lookat_z</name><value><
+  string>0</string></value></member><member><name>region_uuid</name><value><s
+  tring>2af87220-9c0d-4e1f-b15e-378a9a6c2a74</string></value></member><member
+  ><name>region_handle</name><value><string>11006111396599296</string></value
+  ></member><member><name>region_pos_x</name><value><string>145.6689</string>
+  </value></member><member><name>region_pos_y</name><value><string>114.5056</
+  string></value></member><member><name>region_pos_z</name><value><string>32.
+  11618</string></value></member><member><name>avatar_uuid</name><value><stri
+  ng>fb65174f-2dde-4c1e-ba13-1a776d6864fd</string></value></member><member><n
+  ame>lookat_x</name><value><string>0.7904156</string></value></member></stru
+  ct></value></param></params></methodCall>                                  
+########
+T 85.214.139.187:48052 -> 85.214.47.28:8006 [A]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 1488..Expect: 100-
+  continue..Connection: keep-alive..Host: 85.214.47.28:8006....<?xml version=
+  "1.0" encoding="utf-8"?><methodCall><methodName>get_presence_info_bulk</met
+  hodName><params><param><value><struct><member><name>uuids</name><value><arr
+  ay><data><value><string>105d84c7-7604-476e-ab47-6b654d275b37</string></valu
+  e><value><string>105d84c7-7604-476e-ab47-6b654d275b37</string></value><valu
+  e><string>152e038a-62aa-4b5e-a96a-e9bd8c500139</string></value><value><stri
+  ng>152e038a-62aa-4b5e-a96a-e9bd8c500139</string></value><value><string>3ac7
+  dbe2-8d16-4219-ba53-9b6fafa2fc50</string></value><value><string>3ac7dbe2-8d
+  16-4219-ba53-9b6fafa2fc50</string></value><value><string>3baa5f8c-ede3-4027
+  -932a-9317446e2168</string></value><value><string>3baa5f8c-ede3-4027-932a-9
+  317446e2168</string></value><value><string>540adaf9-c146-4264-a747-a4a7cf6b
+  c9f3</string></value><value><string>540adaf9-c146-4264-a747-a4a7cf6bc9f3</s
+  tring></value><value><string>567411eb-cc81-4006-b36a-af8a336157b7</string><
+  /value><value><string>567411eb-cc81-4006-b36a-af8a336157b7</string></value>
+  <value><string>796eeed0-a8e6-4529-8b33-5cfe84aa7794</string></value><value>
+  <string>796eeed0-a8e6-4529-8b33-5cfe84aa7794</string></value><value><string
+  >b44098fd-834f-4e1d-8a98-827c8c802f6b</string></value><value><string>b44098
+  fd-834f-4e1d-8a98-827c8c802f6b</string></value></data></array></value></mem
+  ber><member><name>send_                                                    
+#
+T 85.214.139.187:48052 -> 85.214.47.28:8006 [AP]
+  key</name><value><string>1234</string></value></member><member><name>recv_k
+  ey</name><value><string>1234</string></value></member></struct></value></pa
+  ram></params></methodCall>                                                 
+########
+T 85.214.139.187:48052 -> 85.214.47.28:8006 [AP]
+  POST / HTTP/1.1..Content-Type: text/xml..Content-Length: 469..Expect: 100-c
+  ontinue..Host: 85.214.47.28:8006....<?xml version="1.0" encoding="utf-8"?><
+  methodCall><methodName>agent_leaving</methodName><params><param><value><str
+  uct><member><name>RegionHandle</name><value><string>11006111396599296</stri
+  ng></value></member><member><name>AgentID</name><value><string>fb65174f-2dd
+  e-4c1e-ba13-1a776d6864fd</string></value></member><member><name>RegionUUID<
+  /name><value><string>2af87220-9c0d-4e1f-b15e-378a9a6c2a74</string></value><
+  /member></struct></value></param></params></methodCall>                    
+###exit
+6434 received, 0 dropped
