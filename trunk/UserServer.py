@@ -9,7 +9,7 @@ import uuid
 from xmlrpc.xmlrpc_special import myXmlRpc
 from misc.usefullThings import usefullThings
 import regions.Region
-from time import sleep,  time
+from time import sleep
 import base64
 
 
@@ -94,7 +94,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSql += "  1546967460 as circuit_code,  regions.owner_uuid , regions.serverhttpport as http_port, "
         sSql += " users.lastlogin as seconds_since_epoch,  'True' as login , "
         sSql += " users.uuid as agent_id , regions.serverip as sim_ip, 'last' as start_location, 'Hallo PyLife' as message,"
-        sSql += " regions.serverport as sim_port,  'sim-linuxmain.org' as inventory_host,  'M' as agent_access,  "
+        sSql += " regions.serverport as sim_port,  'http://py3d-worlds.org:8004' as inventory_host,  'M' as agent_access,  "
         sSql += " regions.serverip as sim_ip,  "
         sSql += " agents.securesessionid as secure_session_id,  agents.sessionid as session_id "
         sSql += " from users , regions, agents where users.username = '" + sUsername + "' and users.lastname = '" + sLastname + "' "
@@ -286,13 +286,13 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
         sSQL += args['jacket_item'] + "', '" + args['jacket_asset'] + "', '" + args['gloves_item'] + "', '" + args['gloves_asset'] + "', '"
         sSQL += args['undershirt_item'] + "', '" + args['undershirt_asset'] + "', '" + args['underpants_item'] + "', '" + args['underpants_asset'] + "', '"
         sSQL += args['skirt_item'] + "', '" + args['skirt_asset'] + "')"
-        print "sSql = ",  sSQL
+        #print "sSql = ",  sSQL
         
         sql_result_insert = self.db_com.xmlrpc_executeNormalQuery(sSQL)
         print 'update_avatar_appearance SQL-insert rersult', sql_result_insert
 
         dicResult = {'returnString' : 'TRUE'}
-        print 'dicResult', dicResult
+        #print 'dicResult', dicResult
         
         return dicResult
          
@@ -340,7 +340,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
 #        ownerPerms1
 
         return dicResult
-    
+        
     def xmlrpc_logout_of_simulator(self,  args):
         print 'logout_of_simulator',  args
         
@@ -362,4 +362,3 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
             print 'LOGOUT, avatar_uuid not in args',  args
             
         return {'logout' : 'TRUE'} # Needn't work
-            
