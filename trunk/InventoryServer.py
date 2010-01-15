@@ -4,12 +4,13 @@ from databases.basics import basics
 import databases.DB_Com
 import uuid
 #from xmlrpc.xmlrpc import myXmlRpc
-from xmlrpc import dicxml
+from xmlrpc.gridxml import  gridxml
 
 from misc.usefullThings import usefullThings
 from twisted.web.resource import Resource
+from twisted.internet.threads import deferToThread
 
-class InventoryServer(  Resource,  basics, dicxml,  usefullThings):
+class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
     isLeaf = True
     allowedMethods = ('GET','POST')
     
@@ -18,7 +19,7 @@ class InventoryServer(  Resource,  basics, dicxml,  usefullThings):
         Resource.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
-        dicxml.__init__(self)
+        #dicxml.__init__(self)
         usefullThings.__init__(self)
         
         
@@ -36,26 +37,33 @@ class InventoryServer(  Resource,  basics, dicxml,  usefullThings):
         return "<html>Hello, world!</html>"
 
     def render_POST(self,  request):
-        print ' HTTP Post reached',  request
-        print request.received_headers
-        print request.content.readlines()
-        print request
-        print request.args
+        sRequest = `request`
+        headers =   request.received_headers
+        liContent = request.content.readlines()
+        args =  request.args
+        
         try:
-            
-            dicPost = self.parse_to_dic(request.args)
+            print 'licontent = ',  liContent
+            sXml = liContent[0]
+            print 'sxml = ',  sXml
+            dicPost = self.xmltodict(sXml)
             print 'dicpost = ',  dicPost
+            
             if dicPost:
-                if request.find('GetInventory'):
-                     return deferToThread(self.getInventory, dicPost)
+                if sRequest.find('GetInventory'):
+                    return self.getInventory(dicPost) 
             
             print "try"
-        except :
-            pass
-            
+        except Exception,  params :
+            print Exception,  params
+        return 'NONE'
+        
     def getInventory(self, args):
-        sSql = "select * from inventoryitems where agentid = '" + args['AvatarID'] + "'"
-        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
-        for row in result:
-            pass
-            
+        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "'"
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
+        print len(result )
+        #for row in result:
+        #    dicXml = {}
+            #dicXml[]
+        
+        return '<Hallo>'

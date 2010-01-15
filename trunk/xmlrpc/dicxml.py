@@ -8,6 +8,7 @@ except ImportError:
 class dicxml(etree):
     def __init__(self):
         pass
+        #etree.__init__(self)
             
     def parse_to_dict(xml):
         root = etree.fromstring(xml)

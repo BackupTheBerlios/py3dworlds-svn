@@ -150,7 +150,7 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
             #self.informSim(dicResult)
             
         
-        return dicResult
+        return 'NONE'
         
     def informSim(self,  dicResult):
         #self.server = dicResult['serveruri']

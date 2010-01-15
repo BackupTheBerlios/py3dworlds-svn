@@ -361,7 +361,7 @@ class MyXML:
             #print s
         return s
         
-        
+   
         
 ##        pprint.pprint(dic)
 ##        print dic["database"]["name"]
