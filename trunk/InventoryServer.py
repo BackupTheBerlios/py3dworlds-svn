@@ -3,11 +3,13 @@ from twisted.web import xmlrpc
 from databases.basics import basics
 import databases.DB_Com
 import uuid
-from xmlrpc.xmlrpc import myXmlRpc
+#from xmlrpc.xmlrpc import myXmlRpc
+from xmlrpc import dicxml
+
 from misc.usefullThings import usefullThings
 from twisted.web.resource import Resource
 
-class InventoryServer(  Resource,  basics, myXmlRpc,  usefullThings):
+class InventoryServer(  Resource,  basics, dicxml,  usefullThings):
     isLeaf = True
     allowedMethods = ('GET','POST')
     
@@ -16,7 +18,7 @@ class InventoryServer(  Resource,  basics, myXmlRpc,  usefullThings):
         Resource.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
-        myXmlRpc.__init__(self)
+        dicxml.__init__(self)
         usefullThings.__init__(self)
         
         
@@ -35,20 +37,25 @@ class InventoryServer(  Resource,  basics, myXmlRpc,  usefullThings):
 
     def render_POST(self,  request):
         print ' HTTP Post reached',  request
-        global rootnode
+        print request.received_headers
+        print request.content.readlines()
+        print request
+        print request.args
         try:
-            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            if ctype == 'multipart/form-data':
-                query=cgi.parse_multipart(self.rfile, pdict)
-            self.send_response(301)
             
-            self.end_headers()
-            upfilecontent = query.get('upfile')
-            print "filecontent", upfilecontent[0]
-            self.wfile.write("<HTML>POST OK.<BR><BR>");
-            self.wfile.write(upfilecontent[0]);
+            dicPost = self.parse_to_dic(request.args)
+            print 'dicpost = ',  dicPost
+            if dicPost:
+                if request.find('GetInventory'):
+                     return deferToThread(self.getInventory, dicPost)
             
+            print "try"
         except :
             pass
             
-   
+    def getInventory(self, args):
+        sSql = "select * from inventoryitems where agentid = '" + args['AvatarID'] + "'"
+        result = self.db_com.xmlrpc_executeNormalQuery(sSql)
+        for row in result:
+            pass
+            
