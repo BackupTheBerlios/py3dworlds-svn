@@ -351,11 +351,11 @@ class UserServer( xmlrpc.XMLRPC, basics, myXmlRpc,  usefullThings):
                 # I don't know, c# says userProfile.LastLogin = userAgent.LogoutTime; but LastLogin does not exist
                 sSQL = "UPDATE agents SET agentonline = 0, logouttime = " + int(time())+ ", currenthandle = '" + args['region_handle'] + "', "
                 if 'region_uuid' in args:
-                    sSQL += "currentregion = '" + args['region_uuid'] + "'"
+                    sSQL += "currentregion = '" + args['region_uuid'] + "', "
                 sSQL += "currentpos = '<" + args['region_pos_x'] + "," + args['region_pos_y'] + "," + args['region_pos_z'] + ">', "
                 sSQL += "currentlookat = '<" + args['lookat_x'] + "," + args['lookat_y'] + "," + args['lookat_z'] + ">', "
                 sSQL += "WHERE uuid = '" + args['avatar_uuid'] + "'"
-                sSQL_result = self.db_com.xmlrpc_executeNormalQuery(sSql)[0]
+                sSQL_result = self.db_com.xmlrpc_executeNormalQuery(sSQL)[0]
             except KeyError:
                 print 'LOGOUT, Not enough args',  args
         else:
