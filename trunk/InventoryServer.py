@@ -43,29 +43,35 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         args =  request.args
         
         try:
+            resp = None
             print 'licontent = ',  liContent
             sXml = liContent[0]
             print 'sxml = ',  sXml
             dicPost = self.xmltodict(sXml)
             print 'dicpost = ',  dicPost
-            
+            #defer.maybeDeferred(self.__add, data).addCallbacks(self.finishup,
+             #                                 errback=self.error,
+             #                                 callbackArgs=(request,))     
             if dicPost:
                 if sRequest.find('GetInventory'):
                     #return deferToThread(self.getInventory, dicPost) 
-                    return self.getInventory(dicPost) 
+                    self.getInventory(dicPost,  request) 
             
-            print "try"
+            
         except Exception,  params :
             print Exception,  params
-        return 'NONE'
+            
+       
+       
+        # NO return 'NEVER REACHED'
         
-    def getInventory(self, args):
+    def getInventory(self, args,  request):
         sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' and type between 8 and 10 "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
-        print len(result )
+        #print len(result )
         Folders =[]
         for row in result:
-            print 'row = ',   row
+            #print 'row = ',   row
             dicXml= {}
             InventoryFolderBase = {}
             dicXml['Name'] = row['foldername']
@@ -79,5 +85,7 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             Folders.append(InventoryFolderBase)
         doc = self.createDoc(sDTD= self.dtd1, sRoot = 'Folders' )
         sXml = self.dic2xml(doc, Folders)
-        print sXml
-        return sXml
+        #print sXml
+        
+        request.write(sXml)
+        request.finish()
