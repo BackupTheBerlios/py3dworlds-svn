@@ -9,7 +9,8 @@ class constants:
         self.TerrainPatchSize = 16 
         self.DefaultTexture = "89556747-24cb-43ed-920b-47caed15465f"
 
-        self.dtd1 = 'InventoryCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/ XMLSchema"'
+        self.dtd1 = 'InventoryCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+        self.dtd1_2 = 'xmlns:xsd="http://www.w3.org/2001/ XMLSchema"'
         # Permissions
         self.Group = 4
         self.Everyone = 8

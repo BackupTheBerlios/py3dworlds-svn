@@ -42,6 +42,7 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         liContent = request.content.readlines()
         args =  request.args
         
+        print 'sRequest',  sRequest
         try:
             resp = None
             print 'licontent = ',  liContent
@@ -83,7 +84,7 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             
             InventoryFolderBase = {'InventoryFolderBase': dicXml}
             Folders.append(InventoryFolderBase)
-        doc = self.createDoc(sDTD= self.dtd1, sRoot = 'Folders' )
+        doc = self.createDoc(sDTD= self.dtd1, sDTD2 = self.dtd1_2,   sRoot = 'Folders' )
         sXml = self.dic2xml(doc, Folders)
         #print sXml
         

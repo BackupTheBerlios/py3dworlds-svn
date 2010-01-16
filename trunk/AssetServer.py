@@ -22,14 +22,17 @@ class AssetServer(Resource,  basics, gridxml,  usefullThings):
         usefullThings.__init__(self)
                 
     def render_GET(self, request):
-        print request
+        sRequest = request
+        print sRequest
         print request.postpath
         try:
             if request.postpath == (".html"):
-                f = open(curdir + sep + self.path) #self.path has /test.html
-                                                     
+                pass
+                
         except IOError:
             (404,'File Not Found: %s' % request.postpath)
             
-        return "<html>Hello, world!</html>"
+        sRet =  "<html>Hello, world!  request = " + `sRequest`
+        sRet += " and postpath = " + `request.postpath`+ " </html>"
 
+        return sRet

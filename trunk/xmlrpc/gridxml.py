@@ -7,10 +7,11 @@ class gridxml:
     
     def __init__(self):
         pass
-    def createDoc(self,  sDTD='super_special.dtd',  encoding = 'utf-8',  sRoot='test'  ):
+    def createDoc(self,  sDTD='super_special.dtd',sDTD2='super_special2.dtd',   encoding = 'utf-8',  sRoot='test'  ):
         impl = minidom.getDOMImplementation()
-        dt = impl.createDocumentType(sDTD, None, 'test2')
+        dt = impl.createDocumentType(sDTD +sDTD2, None, sRoot)
         doc = impl.createDocument(None, sRoot, dt)
+        print doc.toxml()
         return doc
     
     def dic2xml(self,  doc, liParams, tag=None):
@@ -18,7 +19,7 @@ class gridxml:
 
         for dicParams in liParams:
             doc = self.append2doc(doc,  dicParams)
-        return doc.toxml()
+        return doc.toxml("UTF-8")
         
     def append2doc(self, doc, dicParams,  tag = None):
 
