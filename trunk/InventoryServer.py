@@ -51,6 +51,7 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             
             if dicPost:
                 if sRequest.find('GetInventory'):
+                    #return deferToThread(self.getInventory, dicPost) 
                     return self.getInventory(dicPost) 
             
             print "try"
@@ -59,11 +60,24 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         return 'NONE'
         
     def getInventory(self, args):
-        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "'"
+        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' and type between 8 and 10 "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
         print len(result )
-        #for row in result:
-        #    dicXml = {}
-            #dicXml[]
-        
-        return '<Hallo>'
+        Folders =[]
+        for row in result:
+            print 'row = ',   row
+            dicXml= {}
+            InventoryFolderBase = {}
+            dicXml['Name'] = row['foldername']
+            dicXml['ID'] = {'Guid': row['folderid']}
+            dicXml['Owner'] = {'Guid': row['agentid']}
+            dicXml['ParentID'] = {'Guid': row['parentfolderid']}
+            dicXml['Type'] = `row['type']`
+            dicXml['Version'] = `row['version']`
+            
+            InventoryFolderBase = {'InventoryFolderBase': dicXml}
+            Folders.append(InventoryFolderBase)
+        doc = self.createDoc(sDTD= self.dtd1, sRoot = 'Folders' )
+        sXml = self.dic2xml(doc, Folders)
+        print sXml
+        return sXml
