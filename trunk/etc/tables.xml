@@ -1959,5 +1959,113 @@
       
     </field>
     </table>
+           <table>
+    <nameOfTable>assets</nameOfTable>
+    <x>22</x>
+    <y>35</y>
     
+    
+    <field>
+      <name>id</name>
+      <type>varchar</type>
+      <pkey>1</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>36</size>
+      <default>'0000'</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>name</name>
+      <type>varchar</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>64</size>
+      <default>'0000'</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>description</name>
+      <type>varchar</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>64</size>
+      <default>'0000'</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>assetType</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    
+    <field>
+      <name>local</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    
+      <field>
+      <name>temporary</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    
+     <field>
+      <name>create_time</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>access_time</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+     <field>
+      <name>data</name>
+      <type>text</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>1</notnull>
+      <size>0</size>
+      <default>0</default>
+      <comment></comment>
+      
+    </field>
+    </table>
 </database>

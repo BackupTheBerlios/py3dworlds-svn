@@ -16,7 +16,7 @@ class convertBlobs(basics):
         print sSql
         cursor.execute(sSql)
         result = cursor.fetchall()
-        print result
+        #print result
         
         cursor.close()
         conn.commit()
@@ -25,7 +25,7 @@ class convertBlobs(basics):
         
         
     def dump(self, table, liBlobs,  sBegin):
-        sSql = " select * from " + table
+        sSql = " select * from " + table 
     
 
         result = self.executeNormalQueryOS(sSql)
@@ -58,9 +58,14 @@ class convertBlobs(basics):
                     s1 = base64.encodestring(`result[i][j]` )
                     #print `s1`
                     #s1.replace('\n', '')
-                    f.write(`s1` + ',  ')
+                    if j == len(result[0]):
+                        f.write(`s1` + '  ')
+                    else:
+                        f.write(`s1` + ',  ')
+                        
                     
-            f.write(' ) ,  ( ')
+            f.write(' ) \n  ' )
+            f.write(sBegin)
         f.close()
         
             
@@ -70,5 +75,15 @@ class convertBlobs(basics):
         sBegin = "INSERT INTO avatarappearance (Owner, Serial, Visual_Params, Texture, Avatar_Height, Body_Item, Body_Asset, Skin_Item, Skin_Asset, Hair_Item, Hair_Asset, Eyes_Item, Eyes_Asset, Shirt_Item, Shirt_Asset, Pants_Item, Pants_Asset, Shoes_Item, Shoes_Asset, Socks_Item, Socks_Asset, Jacket_Item, Jacket_Asset, Gloves_Item, Gloves_Asset, Undershirt_Item, Undershirt_Asset, Underpants_Item, Underpants_Asset, Skirt_Item, Skirt_Asset) VALUES ("
         self.dump('avatarappearance', [2,3],  sBegin)
 
+
+
+
+
+    def dump_assets(self):
+        sBegin = "INSERT INTO assets (name, description, assetType, local, temporary, data, id, create_time, access_time) VALUES ("
+        self.dump('assets', [5],  sBegin)
+        
+        
 cb = convertBlobs()
-cb.dump_avatarappearance()
+#cb.dump_avatarappearance()
+cb.dump_assets()

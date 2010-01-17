@@ -41,24 +41,24 @@ class AssetServer(Resource,  basics, gridxml,  usefullThings):
         #return "<html>Hello, world!</html>"
         
     def getAsset(self,  request,  id):
-        sSQL = "SELECT data, name, assetType as type, local, temporary FROM assets WHERE id = '" + id + "'"
+        sSql = "SELECT data, name, assetType as type, local, temporary FROM assets WHERE id = '" + id + "'"
         result = self.db_com.xmlrpc_executeNormalQuery(sSql)
         
         dic = {}
-        for row in result:
-            dic['Data'] = row['data']
-            dic['FullID'] = {'Guid' : id}
-            dic['ID'] = id
-            dic['name'] = row['name']
-            #dic['Description'] = None tag must be <Description/>
-            dic['Type'] = row['type']
-            dic['Local'] = row['local']
-            dic['Temporary'] = row['temporary']
+        if result and result not in self.liSQL_ERRORS :
+            for row in result:
+                dic['Data'] = row['data']
+                dic['FullID'] = {'Guid' : id}
+                dic['ID'] = id
+                dic['name'] = row['name']
+                #dic['Description'] = None tag must be <Description/>
+                dic['Type'] = row['type']
+                dic['Local'] = row['local']
+                dic['Temporary'] = row['temporary']
+            
+        doc = self.createDoc(sDTD= self.dtd1, sDTD2 = self.dtd1_2,  sRoot = 'AssetBase' )
+        sXml = self.dic2xml(doc, [dic])
+        print sXml
         
-        doc = self.createDoc(sDTD= self.dtd1, sRoot = 'AssetBase' )
-        sXml = self.dic2xml(doc, Folders)
-        #print sXml
-        
-        request.write(sXml)
-        request.finish()
+        return sXml
         

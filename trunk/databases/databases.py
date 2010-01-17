@@ -392,11 +392,11 @@ class databases(constants,  basics):
                 # change column
                 self.modifyColumn(table, co)
             
-            if co.getName() == 'id':
-                print 'create unique index', table.getName()
-                sSql =  'create unique index index_' + table.getName() + '_id on ' + table.getName() + " (id)"
-                ok = self.rpc.callRP('Database.executeNormalQuery',sSql, self.dicUser)
-                
+#            if co.getName() == 'id':
+#                print 'create unique index', table.getName()
+#                sSql =  'create unique index index_' + table.getName() + '_id on ' + table.getName() + " (id)"
+#                ok = self.rpc.callRP('Database.executeNormalQuery',sSql, self.dicUser)
+#                
     def getSqlField(self,sSql, co):
         if (string.find(co.getType(), 'char' )>= 0 ) :
             # find char, so take size to it
