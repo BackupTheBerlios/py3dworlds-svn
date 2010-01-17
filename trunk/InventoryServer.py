@@ -67,7 +67,7 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         # NO return 'NEVER REACHED'
         
     def getInventory(self, args,  request):
-        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' and type between 8 and 10 "
+        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
         #print len(result )
         Folders =[]
