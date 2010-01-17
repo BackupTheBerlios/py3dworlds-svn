@@ -19,16 +19,12 @@ class basics(xmlrpc.XMLRPC,  constants):
         self.debug = 0
         self.DEBUG = False
         self.DEBUG_MODUS = 1
-        self.MN = {}
-        self.MN['DMS'] = 11000
-        self.MN['Forms_Address_Notes_Misc'] = 11010
-        self.MN['Forms_Address_Notes_Contacter'] = 11011
-        self.MN['Forms_Address_Notes_Rep'] = 11012
-        self.MN['Forms_Address_Notes_Salesman'] = 11013
-        
+       
         self.SSL_OFFSET = 500
         
         self.CONFIG_PATH = 'etc/'  
+        self.PROGRAMMODE = 'GRID'
+        
         
         self.DBCOM_PORT = 9000
         self.DBCOM_HOST = 'localhost'
@@ -79,7 +75,7 @@ class basics(xmlrpc.XMLRPC,  constants):
         self.POSTGRES_PORT = 5432
         self.POSTGRES_DB = 'griddata'
         self.POSTGRES_USER = 'griddata'
-        
+        self.POSTGRES_USER_PASSWORD = 'griddata'
         
         self.OSC_HOST = 'localhost'
         self.OSC_PORT = 5432
@@ -125,21 +121,51 @@ class basics(xmlrpc.XMLRPC,  constants):
         try:
             self.cpServer = ConfigParser.ConfigParser()
             
-            self.cpServer.readfp(open(self.CONFIG_PATH + '/server.ini'))
-            # Automatic schedul 
-
-            value = self.getConfigOption('AUTOMATIC','SCHEDUL')
-            if value:
-                if value.upper() == 'YES':
-                    self.AUTOMATIC_SCHEDUL = True
+            self.cpServer.readfp(open(self.CONFIG_PATH + '/py3d.ini'))
+            
               
             # Debug
             value = self.getConfigOption('DEBUG','ACTIVATE')
             if value:
                 if value.upper() == 'YES':
                     self.DEBUG = True
-                
             
+            #Programm -Mode
+            
+            #PROGRAMMODE: grid
+            value = self.getConfigOption('MODE','PROGRAMMODE')
+            if value:
+                    self.PROGRAMMODE = value.upper() 
+                    
+            
+            # switch to the neccessary ini-files
+            
+            if self.PROGRAMMODE == 'GRID':
+                # Postgres
+                value = self.getConfigOption('POSTGRES','POSTGRES_HOST')
+                if value:
+                    self.POSTGRES_HOST = value
+                
+                value = self.getConfigOption('POSTGRES','POSTGRES_PORT')
+                if value:
+                    self.POSTGRES_PORT = int(value)
+                    
+                value = self.getConfigOption('POSTGRES','POSTGRES_DB')
+                if value:
+                    self.POSTGRES_DB = value
+                    
+                value = self.getConfigOption('POSTGRES','POSTGRES_USER')
+                if value:
+                    self.POSTGRES_USER = value
+                    
+                value = self.getConfigOption('POSTGRES','POSTGRES_USER_PASSWORD')
+                if value:
+                    self.POSTGRES_USER_PASSWORD = value    
+            
+            elif self.PROGRAMMODE == 'SIM':
+                pass
+                
+                
             # AI
             value = self.getConfigOption('AI','AI_HOST')
             if value:
@@ -149,23 +175,7 @@ class basics(xmlrpc.XMLRPC,  constants):
             if value:
                 self.AI_PORT = int(value)
                 
-            # Postgres
-            value = self.getConfigOption('POSTGRES','POSTGRES_HOST')
-            if value:
-                self.POSTGRES_HOST = value
-                
-            value = self.getConfigOption('POSTGRES','POSTGRES_PORT')
-            if value:
-                self.POSTGRES_PORT = int(value)
-                
-            value = self.getConfigOption('POSTGRES','POSTGRES_DB')
-            if value:
-                self.POSTGRES_DB = value
-                
-            value = self.getConfigOption('POSTGRES','POSTGRES_USER')
-            if value:
-                self.POSTGRES_USER = value
-                
+            
             # Web2
             value = self.getConfigOption('WEB2','HOST')
             if value:
