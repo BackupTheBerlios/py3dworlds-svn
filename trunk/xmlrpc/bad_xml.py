@@ -15,7 +15,7 @@ def more_roots_to_dict(xml):
     return ret.keys()[0], ret.values()[0]
 
 def more_roots_to_xml(base, root, *args):
-    return ''.join([base] + [dict_to_xml('', root, i) for i in args if not i is None])
+    return ''.join([base] + [dict_to_xml('', root, i) if not i is None else '<%s/>' % (root) for i in args])
 
 if __name__ == '__main__':
     b_xml = '''
