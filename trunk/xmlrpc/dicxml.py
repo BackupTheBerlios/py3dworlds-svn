@@ -1,30 +1,31 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
-    from lxml import etree 
-except ImportError:
+for mod in ['lxml.etree', 'lxml.cElementTree', 'cElementTree',
+            'elementtree.ElementTree', 'xml.etree.cElementTree']:
     try:
-        from lxml import cElementTree as etree
+        globals()['etree'] = __import__(mod, fromlist=[mod.split('.')[-1]])  
     except ImportError:
-        try:
-            import cElementTree as etree
-        except ImportError:
-            try:
-                import elementtree.ElementTree as etree
-            except ImportError:
-                raise ImportError('etree is needed')
-
-from time import clock
+        pass
+    else:
+        break
+if not 'etree' in globals():
+    raise ImportError('etree is needed')
 
 def xml_to_dict(xml):
-    root = etree.fromstring(xml)
+    root = etree.fromstring(xml.strip())
     def parse(children):
         dic = {}
         for child in children:
             tag = child.tag
             if not child.getchildren():
                 text = child.text
-                dic[tag] = text
+                if not tag in dic:
+                    dic[tag] = text
+                elif isinstance(dic[tag], list):
+                    dic[tag].append(text)
+                else:
+                    dic[tag] = [dic[tag], text]
             else:
                 p = parse(iter(child.getchildren()))
                 if not tag in dic:
@@ -62,43 +63,69 @@ def dict_to_xml(base, root, dic):
                 add(etree.SubElement(parent, key), iter(value.iteritems()))
             elif isinstance(value, list):
                 for i in value:
-                    add(etree.SubElement(parent, key), iter(i.iteritems()))
+                    if isinstance(i, dict):
+                        add(etree.SubElement(parent, key), iter(i.iteritems()))
+                    else:
+                        etree.SubElement(parent, key).text = i
             elif value is None:
                 etree.SubElement(parent, key)
             else:
                 etree.SubElement(parent, key).text = value
         return parent
-    return base + etree.tostring(add(root, iter(dic.iteritems())))
+    return ''.join([base, etree.tostring(add(root, iter(dic.iteritems())))])
 
 if __name__ == '__main__':
-    x = '''<?xml version="1.0"?><root>'''
-    x += '''<InventoryFolderBase>
-    <Name>My Inventory</Name>
-        <ID>
-            <Guid>3e1a8134-f9d7-40a1-9a01-7fff99ac8536</Guid>
-        </ID>
-        <Owner>
-            <test>TEST!</test>
-            <Guid>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Guid>
-        </Owner>
-        <ParentID>
-            <Guid>00000000-0000-0000-0000-000000000000</Guid>
-        </ParentID>
-        <Type>8</Type>
-        <Version>1</Version>
-        <selfClosing/>
-    </InventoryFolderBase>'''*10000
-    x += '</root>'
+    from time import clock, sleep
+    x = '''<?xml version="1.0"?>
+    <root>
+        <InventoryFolderBase>
+            <Name>My Inventory</Name>
+            <ID>
+                <Guid>3e1a8134-f9d7-40a1-9a01-7fff99ac8536</Guid>
+            </ID>
+            <Owner>
+                <test>TEST!</test>
+                <Guid>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Guid>
+            </Owner>
+            <ParentID>
+                <Guid>00000000-0000-0000-0000-000000000000</Guid>
+            </ParentID>
+            <Type>8</Type>
+            <Version>1</Version>
+            <Version>2</Version>
+            <selfClosing/>
+        </InventoryFolderBase>
+    </root>'''
     
     start2dict = clock()
     td = xml_to_dict(x)
     end2dict = clock()
-    #print td
+    print td
     start2xml = clock()
     tx = dict_to_xml('<?xml version="1.0"?>', *td)
     end2xml = clock()
-    #print tx
+    print tx
     #print '\n'.join([i.strip() for i in x.splitlines()])
     print 'Zeit für xml_to_dict', end2dict - start2dict, 'Sekunden'
     print 'Zeit für dict_to_xml', end2xml - start2xml, 'Sekunden'
     print len(x.splitlines()), 'Zeilen'
+    '''
+    
+    from threading import Thread
+    
+    def test_threading():
+        td = xml_to_dict(x)
+        tx = dict_to_xml('<?xml version="1.0"?>', *td)
+        print 'Zeit:', clock() - start,
+        print 'Done \n' 
+    
+    threads = [Thread(target=test_threading) for i in range(50)]
+    
+    start = clock()
+    for ii in threads:
+        ii.start()
+        print ii, 'started'
+        #sleep(0.1)
+    ii.join()
+    print len(x.splitlines()), 'Zeilen'
+    '''
