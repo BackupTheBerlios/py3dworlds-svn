@@ -1456,7 +1456,18 @@
       
     </field>
     <field>
-      <name>salePrize</name>
+      <name>salePrice</name>
+      <type>int</type>
+      <pkey>0</pkey>
+      <unique>0</unique>
+      <notnull>0</notnull>
+      <size>0</size>
+      <default></default>
+      <comment></comment>
+      
+    </field>
+    <field>
+      <name>saleType</name>
       <type>int</type>
       <pkey>0</pkey>
       <unique>0</unique>
@@ -1545,7 +1556,7 @@
       
     </field>
     <field>
-      <name>inventorysGroupPermissions</name>
+      <name>inventoryGroupPermissions</name>
       <type>int</type>
       <pkey>0</pkey>
       <unique>0</unique>

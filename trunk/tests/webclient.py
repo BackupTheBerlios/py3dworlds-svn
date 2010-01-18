@@ -23,4 +23,4 @@ class webclient:
 
         sCall = "/GetInventory"
     
-        self.executeConnect(Port,  params, sCall)
+        return self.executeConnect(Port,  params, sCall)

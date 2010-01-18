@@ -1,5 +1,4 @@
 
-
 from xml.dom import minidom
 from xml.dom.minidom import parse, parseString
 
@@ -9,16 +8,23 @@ class gridxml:
         pass
     def createDoc(self,  sDTD='super_special.dtd',sDTD2='super_special2.dtd',   encoding = 'utf-8',  sRoot='test'  ):
         impl = minidom.getDOMImplementation()
-        dt = impl.createDocumentType(sDTD +sDTD2, None, sRoot)
-        doc = impl.createDocument(None, sRoot, dt)
+        #dt = impl.createDocumentType(sRoot , None, None)
+        doc = impl.createDocument(None, sRoot, None)
         print doc.toxml()
         return doc
     
-    def dic2xml(self,  doc, liParams, tag=None):
+    def dic2xml(self,  doc, liParams, sTag=None):
         #print 'liParams = ',  liParams
-
+        if sTag:
+            rootNode = self.getRootNode(doc)
+            tag = self.getSingleNode(rootNode, sTag)[0]
+        else:
+            tag = None
         for dicParams in liParams:
-            doc = self.append2doc(doc,  dicParams)
+            doc = self.append2doc(doc,  dicParams,  tag)
+        return doc
+    
+    def getDoc2String(self, doc):
         return doc.toxml("UTF-8")
         
     def append2doc(self, doc, dicParams,  tag = None):
@@ -76,3 +82,14 @@ class gridxml:
                 node.unlink()
         
 
+    def addElement(self, doc,  sName ):
+        x = doc.createElement(sName)
+        print x
+        self.getRootNode(doc).appendChild(x)
+        return doc
+        
+    def getRootNode(self, doc):
+        return doc.documentElement
+        
+    def getSingleNode(self,  cyNode,  cyValue):
+        return cyNode.getElementsByTagName(cyValue)  

@@ -9,6 +9,8 @@ from xmlrpc.gridxml import  gridxml
 from misc.usefullThings import usefullThings
 from twisted.web.resource import Resource
 from twisted.internet.threads import deferToThread
+import base64
+
 
 class AssetServer(Resource,  basics, gridxml,  usefullThings):
     isLeaf = True
@@ -46,19 +48,33 @@ class AssetServer(Resource,  basics, gridxml,  usefullThings):
         
         dic = {}
         if result and result not in self.liSQL_ERRORS :
+            sXml = self.dtd2
             for row in result:
-                dic['Data'] = row['data']
-                dic['FullID'] = {'Guid' : id}
-                dic['ID'] = id
-                dic['name'] = row['name']
-                #dic['Description'] = None tag must be <Description/>
-                dic['Type'] = row['type']
-                dic['Local'] = row['local']
-                dic['Temporary'] = row['temporary']
-            
-        doc = self.createDoc(sDTD= self.dtd1, sDTD2 = self.dtd1_2,  sRoot = 'AssetBase' )
-        sXml = self.dic2xml(doc, [dic])
-        print sXml
+                sXml += "<Data>" +  base64.decodestring(row['data']) + "</Data>"
+                sXml += "<FullID><Guid>" + id + "</Guid></FullID>"
+                sXml += "<ID>" + id + "</ID>"
+                sXml += "<Name>" +row['name'] + "</Name>"
+                sXml += "<Description/>"
+                sXml += "<Type>" + `row['type']` + "</Type>"
+                sXml += "<Local>" + ('false' if row['local'] == 0 else 'true') + "</Local>"
+                sXml += "<Temporary>" + ('false' if row['temporary'] == 0 else 'true')  + "</Temporary>"
+                
+            sXml += "</AssetBase>"
+        else:
+            sXml = self.dtd2 + "</AssetBase>"
+                
+#                dic['Data'] = row['data']
+#                dic['FullID'] = {'Guid' : id}
+#                dic['ID'] = id
+#                dic['name'] = row['name']
+#                #dic['Description'] = None tag must be <Description/>
+#                dic['Type'] = row['type']
+#                dic['Local'] = row['local']
+#                dic['Temporary'] = row['temporary']
+#            
+#        doc = self.createDoc(sDTD= self.dtd1,None,  sRoot = 'AssetBase' )
+#        sXml = self.dic2xml(doc, [dic])
+#        print sXml
         
         return sXml
         
