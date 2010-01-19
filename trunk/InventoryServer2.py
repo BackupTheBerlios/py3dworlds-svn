@@ -14,6 +14,8 @@ from xmlrpc.gridxml import  gridxml
 from misc.usefullThings import usefullThings
 import time
 import sys
+from wsgiref.handlers import SimpleHandler
+
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -43,8 +45,9 @@ class MyHandler(BaseHTTPRequestHandler):
         
         
         self.send_response(200,  self.request_version)
-        #self.send_header("Keep-Alive", "timeout=30, max=400")
-        #self.send_header("Connection", "Keep-Alive ")
+        #self.send_header('Expect' ,  '100-continue')
+        self.send_header("Keep-Alive", "timeout=30, max=400")
+        self.send_header("Connection", "Keep-Alive ")
         self.send_header("Content-type", "application/xml")
         self.end_headers()
         

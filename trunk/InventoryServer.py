@@ -5,26 +5,44 @@ import databases.DB_Com
 import uuid
 #from xmlrpc.xmlrpc import myXmlRpc
 from xmlrpc.gridxml import  gridxml
-
+from twisted.internet import reactor
 from misc.usefullThings import usefullThings
-from twisted.web.resource import Resource
+from twisted.web2 import resource,  stream 
 from twisted.internet.threads import deferToThread,  defer 
 import time
 from twisted.web.server import NOT_DONE_YET
+from twisted.web2 import http, http_headers, iweb, server
 
 
 
-class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
+class InventoryServer(  resource.Resource,  basics, gridxml,  usefullThings):
     isLeaf = True
     allowedMethods = ('GET','POST')
     
     
     def __init__(self):
-        Resource.__init__(self)
+        #resource.__init__(self)
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
         #dicxml.__init__(self)
         usefullThings.__init__(self)
+        self.responseCode = 200
+        self.responseText = 'This is a fake resource.'
+        self.responseHeaders = {}
+        self.addSlash = False
+        self.responseStream =stream.MemoryStream( "start")
+        
+#    def render(self, req):
+#            d = defer.Deferred()
+#            reactor.callLater(0, d.callback, self.MyRender( req) )
+#            return d
+#            
+#    def MyRender(self, req):
+#        return http.Response(self.responseCode, headers=self.responseHeaders,
+#                             stream=self.responseStream)
+
+    def render(self, request):
+        self.render_POST(request)
         
         
     def render_GET(self, request):
@@ -57,11 +75,37 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             #defer.maybeDeferred(self.__add, data).addCallbacks(self.finishup,
              #                                 errback=self.error,
              #                                 callbackArgs=(request,))     
+            request.responseHeaders.removeHeader ('content-type')
+            request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
+            
+            request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
+            request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
+            
+            print 'res.Headers = ',   request.responseHeaders
+            
+            self.responseCode = 200
+            self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
+            print 'stream = ',  self.responseStream
+            http.Response(self.responseCode, headers=request.responseHeaders, stream= self.responseStream)
+
+   
             if dicPost:
                 if sRequest.find('GetInventory'):
                     #deferToThread(self.getInventory, dicPost,  request) 
                     #return deferToThread(self.getInventory, dicPost,  request)
-                    return self.getInventory(dicPost,  request) 
+                    request.responseHeaders.removeHeader ('content-type')
+                    request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
+                    
+                    request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
+                    request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
+                    
+                    print request.responseHeaders
+                    
+                    self.responseCode = 200
+                    self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
+                    print 'stream = ',  self.responseStream
+                    http.Response(self.responseCode, headers=request.responseHeaders,
+                             stream= self.responseStream)
             
             
         except Exception,  params :
@@ -71,7 +115,9 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         return  NOT_DONE_YET
         #return
         # NO return 'NEVER REACHED'
-        
+
+
+ 
     def getInventory(self, args,  request):
         sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' limit 3  "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
@@ -127,12 +173,12 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         #f= open('py3d.xml', 'wb')
         #f.write(sXml)
         #f.close()
-        #print sXml
+        print sXml
         print 'post finish'
-        request.write(sXml)
-        request.finish()
+        #request.write(sXml)
+        #request.finish()
         print 'send all'
-        return  NOT_DONE_YET
+        return  sXml
         #return
 
 
