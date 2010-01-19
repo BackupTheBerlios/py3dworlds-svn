@@ -46,14 +46,14 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
         liContent = request.content.readlines()
         args =  request.args
         
-        print 'sRequest',  sRequest
+        #print 'sRequest',  sRequest
         try:
             resp = None
             print 'licontent = ',  liContent
             sXml = liContent[0]
-            print 'sxml = ',  sXml
+            #print 'sxml = ',  sXml
             dicPost = self.xmltodict(sXml)
-            print 'dicpost = ',  dicPost
+            #print 'dicpost = ',  dicPost
             #defer.maybeDeferred(self.__add, data).addCallbacks(self.finishup,
              #                                 errback=self.error,
              #                                 callbackArgs=(request,))     
@@ -61,19 +61,19 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
                 if sRequest.find('GetInventory'):
                     #deferToThread(self.getInventory, dicPost,  request) 
                     #return deferToThread(self.getInventory, dicPost,  request)
-                    self.getInventory(dicPost,  request) 
+                    return self.getInventory(dicPost,  request) 
             
             
         except Exception,  params :
             print Exception,  params
             
        
-        #return  NOT_DONE_YET
-        return
+        return  NOT_DONE_YET
+        #return
         # NO return 'NEVER REACHED'
         
     def getInventory(self, args,  request):
-        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' "
+        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' limit 3  "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
         #print len(result )
         sXml = self.dtd1 +"<Folders>"
@@ -85,10 +85,10 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             sXml += "<ParentID><Guid>" +  row['parentfolderid'] + "</Guid></ParentID>"
             sXml += " <Type>" + `row['type']` + "</Type>"
             sXml += "<Version>" + `row['version']` + "</Version>"
-            sXml += "</InventoryFolderBase>\n"
+            sXml += "</InventoryFolderBase>"
         
-        sXml += "</Folders>\n"
-        sSql = "select * from inventoryitems where avatarid = '" + args['AvatarID'][0] + "' limit 20"
+        sXml += "</Folders>"
+        sSql = "select * from inventoryitems where avatarid = '" + args['AvatarID'][0] + "' limit 2"
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
 
         sXml += "<Items>"
@@ -115,20 +115,23 @@ class InventoryServer(  Resource,  basics, gridxml,  usefullThings):
             sXml += "<SaleType>" +  `row['saletype']`+ "</SaleType>"
             sXml += "<Flags>" +  `row['flags']`+ "</Flags>"
             sXml += "<CreationDate>" + `row['creationdate']`+ "</CreationDate>"
-            sXml += "</InventoryItemBase>\n"
-        sXml += "</Items>\n"    
+            sXml += "</InventoryItemBase>"
+        sXml += "</Items>"    
         
         # last add user to it <UserID><Guid>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Guid  >
-        sXml += "<UserID><Guid>" +args['AvatarID'][0] + "</Guid></UserID>\n"
+        sXml += "<UserID><Guid>" +args['AvatarID'][0] + "</Guid></UserID>"
         # close the xml root tag
         sXml += "</InventoryCollection>"
-        f= open('py3d.xml', 'wb')
-        f.write(sXml)
-        f.close()
+        sXml = sXml.replace('&', '&amp;')
+
+        #f= open('py3d.xml', 'wb')
+        #f.write(sXml)
+        #f.close()
         #print sXml
         print 'post finish'
         request.write(sXml)
         request.finish()
+        print 'send all'
         return  NOT_DONE_YET
         #return
 

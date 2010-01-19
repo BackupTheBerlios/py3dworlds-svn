@@ -8,6 +8,7 @@ from twisted.web import server
 import mainxmlrpc    
 import databases.basics
 import sys
+import InventoryServer2
 
 baseSettings = databases.basics.basics()
 
@@ -25,7 +26,7 @@ m = mainxmlrpc.ServerData()
 u = m.getUserSite()
 g = m.getGridSite()
 a = m.getAssetSite()
-i = m.getInventorySite()
+#i = m.getInventorySite()
 
 try:    
     port = int(sys.argv[1])
@@ -39,7 +40,9 @@ reactor.listenTCP(baseSettings.GRID_PORT + port, server.Site(g))
 
 reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
 
-reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
+#reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
+
+
 
 if openssl:
     """Create an SSL context."""
