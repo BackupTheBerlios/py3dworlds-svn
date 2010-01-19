@@ -8,7 +8,12 @@ from twisted.web import server
 import mainxmlrpc    
 import databases.basics
 import sys
-import InventoryServer2
+
+from twisted.web2 import channel
+from twisted.web2 import server as server2
+
+#from twisted.application import service, strports
+
 
 baseSettings = databases.basics.basics()
 
@@ -26,7 +31,8 @@ m = mainxmlrpc.ServerData()
 u = m.getUserSite()
 g = m.getGridSite()
 a = m.getAssetSite()
-i = m.getInventorySite()
+i = m.getInventorySite() 
+#i =server2.Site( m.getInventorySite() )
 
 try:    
     port = int(sys.argv[1])
@@ -41,6 +47,7 @@ reactor.listenTCP(baseSettings.GRID_PORT + port, server.Site(g))
 reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
 
 reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
+#reactor.listenTCP(baseSettings.INVENTORY_PORT + port, channel.HTTPFactory(i))
 
 
 
@@ -48,9 +55,12 @@ if openssl:
     """Create an SSL context."""
     
     try:
-        reactor.listenSSL(baseSettings.USER_PORT + baseSettings.SSL_OFFSET + port,  server.Site(u), mainxmlrpc.ServerContextFactory())
+        #reactor.listenSSL(baseSettings.USER_PORT + baseSettings.SSL_OFFSET + port,  server.Site(u), mainxmlrpc.ServerContextFactory())
         print 'HTTPS activated'
     except:
         print 'Error by activating HTTPS. Please check serverkey.pem and servercert.pem.'
+
+
+
 
 reactor.run()

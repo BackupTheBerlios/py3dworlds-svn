@@ -42,8 +42,14 @@ class InventoryServer(  resource.Resource,  basics, gridxml,  usefullThings):
 #                             stream=self.responseStream)
 
     def render(self, request):
-        self.render_POST(request)
         
+        #self.render_POST(request)
+        print "render called"
+        response = http.Response(stream = """Hello monkey!""") 
+        
+        return response
+     
+    
         
     def render_GET(self, request):
         print request
@@ -86,27 +92,27 @@ class InventoryServer(  resource.Resource,  basics, gridxml,  usefullThings):
             self.responseCode = 200
             self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
             print 'stream = ',  self.responseStream
-            http.Response(self.responseCode, headers=request.responseHeaders, stream= self.responseStream)
+            return http.Response(self.responseCode, headers=request.responseHeaders, stream= self.responseStream)
 
-   
-            if dicPost:
-                if sRequest.find('GetInventory'):
-                    #deferToThread(self.getInventory, dicPost,  request) 
-                    #return deferToThread(self.getInventory, dicPost,  request)
-                    request.responseHeaders.removeHeader ('content-type')
-                    request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
-                    
-                    request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
-                    request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
-                    
-                    print request.responseHeaders
-                    
-                    self.responseCode = 200
-                    self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
-                    print 'stream = ',  self.responseStream
-                    http.Response(self.responseCode, headers=request.responseHeaders,
-                             stream= self.responseStream)
-            
+#   
+#            if dicPost:
+#                if sRequest.find('GetInventory'):
+#                    #deferToThread(self.getInventory, dicPost,  request) 
+#                    #return deferToThread(self.getInventory, dicPost,  request)
+#                    request.responseHeaders.removeHeader ('content-type')
+#                    request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
+#                    
+#                    request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
+#                    request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
+#                    
+#                    print request.responseHeaders
+#                    
+#                    self.responseCode = 200
+#                    self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
+#                    print 'stream = ',  self.responseStream
+#                    http.Response(self.responseCode, headers=request.responseHeaders,
+#                             stream= self.responseStream)
+#            
             
         except Exception,  params :
             print Exception,  params
