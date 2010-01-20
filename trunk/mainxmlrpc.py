@@ -43,7 +43,7 @@ class ServerContextFactory:
     def render_GET(self, request):
         print request
 
-class ServerData(xmlrpc.XMLRPC):
+class ServerData:
     def __init__(self):
         pass
         

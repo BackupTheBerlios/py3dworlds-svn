@@ -6,7 +6,7 @@ class webclient:
         pass
         
     def executeConnect(self, port, params,  sCall):
-        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/xml"}
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/xml",  "Content-Length": len(params)}
 
         conn = httplib.HTTPConnection("py3d-worlds.org:" + `port`)
         conn.request("POST", sCall, params, headers)
@@ -19,8 +19,8 @@ class webclient:
         
     def test_getInventory01(self):
         Port = 8004 
-        params = '<?xml version="1.0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3.org   /2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><SessionID>c52a992a-96f8-90f3-b7e4-0c6d9abc9dee</SessionID><AvatarID>fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Body></RestSessionObjectOfGuid>'
+        params = '<?xml version="1.0" encoding="utf-8"?><RestSessionObjectOfGuid xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><SessionID>c52a992a-96f8-90f3-b7e4-0c6d9abc9dee</SessionID><AvatarID>fb65174f-2dde-4c1e-ba13-1a776d6864fd</AvatarID><Body>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Body></RestSessionObjectOfGuid>'
 
-        sCall = "/GetInventory"
-    
+        sCall = "/GetInventory/"
+        #sCall = None
         return self.executeConnect(Port,  params, sCall)

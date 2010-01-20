@@ -11,27 +11,32 @@ from twisted.web2 import resource,  stream
 from twisted.internet.threads import deferToThread,  defer 
 import time
 from twisted.web.server import NOT_DONE_YET
-from twisted.web2 import http, http_headers, iweb, server
+from twisted.web2 import http, http_headers, iweb, server,  channel 
 
 
 
-class InventoryServer(  resource.Resource,  basics, gridxml,  usefullThings):
-    isLeaf = True
+class InventoryServer(resource.Resource,  basics, gridxml,  usefullThings):
+    _allowedMethods = ('GET','POST')
     allowedMethods = ('GET','POST')
-    
-    
+    addSlash = True
     def __init__(self):
         #resource.__init__(self)
+        #resource.Resource.__init__(self)
+
+        self.isLeaf = True
+        self.allowedMethods = ('GET','POST')
+        self.addSlash = False
+
         basics.__init__(self)
         self.db_com = databases.DB_Com.DB_Com()
         #dicxml.__init__(self)
         usefullThings.__init__(self)
-        self.responseCode = 200
-        self.responseText = 'This is a fake resource.'
-        self.responseHeaders = {}
-        self.addSlash = False
-        self.responseStream =stream.MemoryStream( "start")
-        
+#        self.responseCode = 200
+#        self.responseText = 'This is a fake resource.'
+#        self.responseHeaders = {}
+#        self.addSlash = False
+#        self.responseStream =stream.MemoryStream( "start")
+#        
 #    def render(self, req):
 #            d = defer.Deferred()
 #            reactor.callLater(0, d.callback, self.MyRender( req) )
@@ -41,32 +46,65 @@ class InventoryServer(  resource.Resource,  basics, gridxml,  usefullThings):
 #        return http.Response(self.responseCode, headers=self.responseHeaders,
 #                             stream=self.responseStream)
 
-    def render(self, request):
-        
-        #self.render_POST(request)
-        print "render called"
+    def renderHTTP(self,  request):
+        print "render request = ",  request
         response = http.Response(stream = """Hello monkey!""") 
-        
-        return response
-     
+        return response 
+#        
+#    def render(self,  request):
+#        print 'normal render reached'
+#        self.http_POST(request)
+#        
+#    def http_PUT(self, request):
+#        print "render put called"
+#        
+#        self.http_POST(request)
+#        #response = http.Response(stream = """Hello monkey!""") 
+#        
+#        #return response
+#     
     
         
-    def render_GET(self, request):
-        print request
-        print request.postpath
-        try:
-            if request.postpath == (".html"):
-                f = open(curdir + sep + self.path) #self.path has /test.html
-                
-                                     
-        except IOError:
-            (404,'File Not Found: %s' % request.postpath)
-            
-        return "<html>Hello, world!</html>"
+    def http_GET(self, request):
+        self.http_POST(request)
+        return
+#        print request
+#        print request.postpath
+#        try:
+#            if request.postpath == (".html"):
+#                f = open(curdir + sep + self.path) #self.path has /test.html
+#                
+#                                     
+#        except IOError:
+#            (404,'File Not Found: %s' % request.postpath)
+#            
+#        return "<html>Hello, world!</html>"
 
-    def render_POST(self,  request):
+    def http_POST (self,  request):
+        print 'reached Post'
+        s1 = server.parsePOSTData(request,  self.maxMem, self.maxFields, self.maxSize)
+#        if request.stream.length == 0:
+#            return defer.succeed(None)
+        print 's1 = ' ,  s1
+        self.finished(request)
+
+        return 
+    def _handle_POST(self, env, start_response):
+        print 'reached _Post'
+        
+        return 
+    def getInventory(self,  request):
+        print 'getInventory'
+        return
+        
+
+    def finished(self, request):
+        
         sRequest = `request`
-        headers =   request.received_headers
+        print sRequest
+        
+        header =   request.headers.getHeader()
+        print header
         liContent = request.content.readlines()
         args =  request.args
         

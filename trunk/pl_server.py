@@ -11,6 +11,7 @@ import sys
 
 from twisted.web2 import channel
 from twisted.web2 import server as server2
+# import InventoryServer
 
 #from twisted.application import service, strports
 
@@ -31,9 +32,9 @@ m = mainxmlrpc.ServerData()
 u = m.getUserSite()
 g = m.getGridSite()
 a = m.getAssetSite()
-i = m.getInventorySite() 
+#i = m.getInventorySite() 
 #i =server2.Site( m.getInventorySite() )
-
+#i = server2.Site(InventoryServer.InventoryServer())
 try:    
     port = int(sys.argv[1])
 except:
@@ -46,7 +47,7 @@ reactor.listenTCP(baseSettings.GRID_PORT + port, server.Site(g))
 
 reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
 
-reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
+#reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
 #reactor.listenTCP(baseSettings.INVENTORY_PORT + port, channel.HTTPFactory(i))
 
 
