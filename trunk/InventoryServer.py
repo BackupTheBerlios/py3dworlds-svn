@@ -1,5 +1,6 @@
 # coding=utf-8
-from twisted.web import xmlrpc
+from twisted.internet.task import deferLater
+from twisted.web.resource import Resource
 from databases.basics import basics
 import databases.DB_Com
 import uuid
@@ -7,21 +8,20 @@ import uuid
 from xmlrpc.gridxml import  gridxml
 from twisted.internet import reactor
 from misc.usefullThings import usefullThings
-from twisted.web2 import resource,  stream 
+
 from twisted.internet.threads import deferToThread,  defer 
 import time
 from twisted.web.server import NOT_DONE_YET
-from twisted.web2 import http, http_headers, iweb, server,  channel 
 
 
 
-class InventoryServer(resource.Resource,  basics, gridxml,  usefullThings):
+class InventoryServer(Resource,  basics, gridxml,  usefullThings):
     _allowedMethods = ('GET','POST')
     allowedMethods = ('GET','POST')
     addSlash = True
     def __init__(self):
         #resource.__init__(self)
-        #resource.Resource.__init__(self)
+        Resource.__init__(self)
 
         self.isLeaf = True
         self.allowedMethods = ('GET','POST')
@@ -31,203 +31,156 @@ class InventoryServer(resource.Resource,  basics, gridxml,  usefullThings):
         self.db_com = databases.DB_Com.DB_Com()
         #dicxml.__init__(self)
         usefullThings.__init__(self)
-#        self.responseCode = 200
-#        self.responseText = 'This is a fake resource.'
-#        self.responseHeaders = {}
-#        self.addSlash = False
-#        self.responseStream =stream.MemoryStream( "start")
-#        
-#    def render(self, req):
-#            d = defer.Deferred()
-#            reactor.callLater(0, d.callback, self.MyRender( req) )
-#            return d
-#            
-#    def MyRender(self, req):
-#        return http.Response(self.responseCode, headers=self.responseHeaders,
-#                             stream=self.responseStream)
 
-    def renderHTTP(self,  request):
-        print "render request = ",  request
-        response = http.Response(stream = """Hello monkey!""") 
-        return response 
-#        
-#    def render(self,  request):
-#        print 'normal render reached'
-#        self.http_POST(request)
-#        
-#    def http_PUT(self, request):
-#        print "render put called"
-#        
-#        self.http_POST(request)
-#        #response = http.Response(stream = """Hello monkey!""") 
-#        
-#        #return response
-#     
     
         
-    def http_GET(self, request):
-        self.http_POST(request)
-        return
-#        print request
-#        print request.postpath
-#        try:
-#            if request.postpath == (".html"):
-#                f = open(curdir + sep + self.path) #self.path has /test.html
-#                
-#                                     
-#        except IOError:
-#            (404,'File Not Found: %s' % request.postpath)
-#            
-#        return "<html>Hello, world!</html>"
+    def render_GET(self, request):
+    
+            
+        return "<html>Hello, world!</html>"
 
-    def http_POST (self,  request):
+    def render_POST (self,  request):
         print 'reached Post'
-        s1 = server.parsePOSTData(request,  self.maxMem, self.maxFields, self.maxSize)
-#        if request.stream.length == 0:
-#            return defer.succeed(None)
-        print 's1 = ' ,  s1
-        self.finished(request)
-
-        return 
-    def _handle_POST(self, env, start_response):
-        print 'reached _Post'
-        
-        return 
-    def getInventory(self,  request):
-        print 'getInventory'
-        return
-        
-
-    def finished(self, request):
         
         sRequest = `request`
-        print sRequest
-        
-        header =   request.headers.getHeader()
-        print header
+        headers =   request.received_headers
         liContent = request.content.readlines()
         args =  request.args
         
-        #print 'sRequest',  sRequest
+        print 'sRequest',  sRequest
         try:
             resp = None
             print 'licontent = ',  liContent
             sXml = liContent[0]
-            #print 'sxml = ',  sXml
+            print 'sxml = ',  sXml
             dicPost = self.xmltodict(sXml)
-            #print 'dicpost = ',  dicPost
+            print 'dicpost = ',  dicPost
             #defer.maybeDeferred(self.__add, data).addCallbacks(self.finishup,
              #                                 errback=self.error,
              #                                 callbackArgs=(request,))     
-            request.responseHeaders.removeHeader ('content-type')
-            request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
-            
-            request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
-            request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
-            
-            print 'res.Headers = ',   request.responseHeaders
-            
-            self.responseCode = 200
-            self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
-            print 'stream = ',  self.responseStream
-            return http.Response(self.responseCode, headers=request.responseHeaders, stream= self.responseStream)
+            if dicPost:
+                if sRequest.find('GetInventory'):
+                    
+                    #return deferToThread(self.getInventory, dicPost) 
+                    #d = deferLater(reactor, 5, lambda: request)
+                    #d.addCallback(self.getInventory(dicPost,  request))
+                    #return NOT_DONE_YET
 
-#   
-#            if dicPost:
-#                if sRequest.find('GetInventory'):
-#                    #deferToThread(self.getInventory, dicPost,  request) 
-#                    #return deferToThread(self.getInventory, dicPost,  request)
-#                    request.responseHeaders.removeHeader ('content-type')
-#                    request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
-#                    
-#                    request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
-#                    request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
-#                    
-#                    print request.responseHeaders
-#                    
-#                    self.responseCode = 200
-#                    self.responseStream = stream.MemoryStream(self.getInventory(dicPost,  request) )
-#                    print 'stream = ',  self.responseStream
-#                    http.Response(self.responseCode, headers=request.responseHeaders,
-#                             stream= self.responseStream)
-#            
+                    request = self.getInventory(dicPost,  request) 
+                    
             
         except Exception,  params :
             print Exception,  params
-            
-       
-        return  NOT_DONE_YET
-        #return
-        # NO return 'NEVER REACHED'
+        return request
+        
+    def getInventory(self,   args,  request):
+    
+        request.responseHeaders.removeHeader ('content-type')
+        request.responseHeaders.addRawHeader("Content-Type", "application/xml ")
+        
+        request.responseHeaders.addRawHeader("Keep-Alive", "timeout=30, max=400")
+        request.responseHeaders.addRawHeader("Connection", "Keep-Alive ")
+        
+        #request.setResponseCode(200)
+        print 'res.Headers = ',   request.responseHeaders
 
-
- 
-    def getInventory(self, args,  request):
-        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' limit 3  "
+        #s1 = "<InventoryFolderBase>test </InventoryFolderBase>\n"
+        #time.sleep(5)
+        #return s1
+        
+        
+        #print args
+        sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "'  and type = 8"
+        resultRoot = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
+        sSql = "select * from inventoryfolders where parentfolderid = '" + resultRoot[0]['folderid'] +"' "
+        #sSql = "select * from inventoryfolders where agentid = '" + args['AvatarID'][0] + "' limit 5 "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
         #print len(result )
-        sXml = self.dtd1 +"<Folders>"
-        for row in result:
-            sXml += "<InventoryFolderBase>"
-            sXml += "<Name>"+ row['foldername'] + "</Name>"
-            sXml += "<ID><Guid>" +  row['folderid'] + "</Guid></ID>"
-            sXml += "<Owner><Guid>" + row['agentid'] +"</Guid></Owner>"
-            sXml += "<ParentID><Guid>" +  row['parentfolderid'] + "</Guid></ParentID>"
-            sXml += " <Type>" + `row['type']` + "</Type>"
-            sXml += "<Version>" + `row['version']` + "</Version>"
-            sXml += "</InventoryFolderBase>"
+        sXml = self.dtd1 +"<Folders>\n"
+        for row in resultRoot:
+            sXml += "<InventoryFolderBase>\n"
+            sXml += "<Name>"+ row['foldername'] + "</Name>\n"
+            sXml += "<ID><Guid>" +  row['folderid'] + "</Guid></ID>\n"
+            sXml += "<Owner><Guid>" + row['agentid'] +"</Guid></Owner>\n"
+            sXml += "<ParentID><Guid>" +  row['parentfolderid'] + "</Guid></ParentID>\n"
+            sXml += " <Type>" + `row['type']` + "</Type>\n"
+            sXml += "<Version>" + `row['version']` + "</Version>\n"
+            sXml += "</InventoryFolderBase>\n"
         
-        sXml += "</Folders>"
-        sSql = "select * from inventoryitems where avatarid = '" + args['AvatarID'][0] + "' limit 2"
+        for row in result:
+            sXml += "<InventoryFolderBase>\n"
+            sXml += "<Name>"+ row['foldername'] + "</Name>\n"
+            sXml += "<ID><Guid>" +  row['folderid'] + "</Guid></ID>\n"
+            sXml += "<Owner><Guid>" + row['agentid'] +"</Guid></Owner>\n"
+            sXml += "<ParentID><Guid>" +  row['parentfolderid'] + "</Guid></ParentID>\n"
+            sXml += " <Type>" + `row['type']` + "</Type>\n"
+            sXml += "<Version>" + `row['version']` + "</Version>\n"
+            sXml += "</InventoryFolderBase>\n"
+        
+        sXml += "</Folders>\n"
+        sSql = "select * from inventoryitems where avatarid = '" + args['AvatarID'][0] + "' and parentfolderid = 'f92ddd25-a266-4034-863f-938f63183d17' "
         result = self.db_com.xmlrpc_executeNormalQuery(sSql.encode())
 
-        sXml += "<Items>"
+        sXml += "<Items>\n"
         for row in result:
-            sXml += "<InventoryItemBase>"
-            sXml += "<Name>" +row['inventoryname']  +"</Name>"
-            sXml += "<ID><Guid>" +row['inventoryid'] +"</Guid></ID>"
-            sXml += "<Owner><Guid>" +row['avatarid'] + "</Guid></Owner>"
-            sXml += "<InvType>" + `row['invtype']` + "</InvType>"
-            sXml += "<Folder><Guid>" +row['parentfolderid'] + "</Guid></Folder>"
-            sXml += "<CreatorId>" + row['creatorid'] + "</CreatorId>"
-            sXml += "<CreatorIdAsUuid><Guid>" + "</Guid></CreatorIdAsUuid>"
-            sXml += "<Description>" +  row['inventorydescription']  + "</Description>"
-            sXml += "<NextPermissions>" + `row['inventorynextpermissions']` + "</NextPermissions>"
-            sXml += "<CurrentPermissions>" + `row['inventorycurrentpermissions']`+ "</CurrentPermissions>"
-            sXml += "<BasePermissions>" + `row['inventorybasepermissions']` + "</BasePermissions>"
-            sXml += "<EveryOnePermissions>" +  `row['inventoryeveryonepermissions']`+ "</EveryOnePermissions>"
-            sXml += "<GroupPermissions>" + `row['inventorygrouppermissions']`+ "</GroupPermissions>"
-            sXml += "<AssetType>" + `row['assettype']` + "</AssetType>"
-            sXml += "<AssetID><Guid>" + row['assetid']+ "</Guid></AssetID>"
-            sXml += "<GroupID><Guid>" +row['groupid'] + "</Guid></GroupID>"
-            sXml += "<GroupOwned>" +('false' if row['groupowned'] == 0 else 'true') + "</GroupOwned>"
-            sXml += "<SalePrice>" +  `row['saleprice']`+ "</SalePrice>"
-            sXml += "<SaleType>" +  `row['saletype']`+ "</SaleType>"
-            sXml += "<Flags>" +  `row['flags']`+ "</Flags>"
-            sXml += "<CreationDate>" + `row['creationdate']`+ "</CreationDate>"
-            sXml += "</InventoryItemBase>"
-        sXml += "</Items>"    
+            sXml += "<InventoryItemBase>\n"
+            sXml += "<Name>" +row['inventoryname']  +"</Name>\n"
+            sXml += "<ID><Guid>" +row['inventoryid'] +"</Guid></ID>\n"
+            sXml += "<Owner><Guid>" +row['avatarid'] + "</Guid></Owner>\n"
+            sXml += "<InvType>" + `row['invtype']` + "</InvType>\n"
+            sXml += "<Folder><Guid>" +row['parentfolderid'] + "</Guid></Folder>\n"
+            sXml += "<CreatorId>" + row['creatorid'] + "</CreatorId>\n"
+            sXml += "<CreatorIdAsUuid><Guid>" + row['creatorid'] + "</Guid></CreatorIdAsUuid>\n"
+            sXml += "<Description>" +  row['inventorydescription']  + "</Description>\n"
+            sXml += "<NextPermissions>" + `row['inventorynextpermissions']` + "</NextPermissions>\n"
+            sXml += "<CurrentPermissions>" + `row['inventorycurrentpermissions']`+ "</CurrentPermissions>\n"
+            sXml += "<BasePermissions>" + `row['inventorybasepermissions']` + "</BasePermissions>\n"
+            sXml += "<EveryOnePermissions>" +  `row['inventoryeveryonepermissions']`+ "</EveryOnePermissions>\n"
+            sXml += "<GroupPermissions>" + `row['inventorygrouppermissions']`+ "</GroupPermissions>\n"
+            sXml += "<AssetType>" + `row['assettype']` + "</AssetType>\n"
+            sXml += "<AssetID><Guid>" + row['assetid']+ "</Guid></AssetID>\n"
+            sXml += "<GroupID><Guid>" +row['groupid'] + "</Guid></GroupID>\n"
+            sXml += "<GroupOwned>" +('false' if row['groupowned'] == 0 else 'true') + "</GroupOwned>\n"
+            sXml += "<SalePrice>" +  `row['saleprice']`+ "</SalePrice>\n"
+            sXml += "<SaleType>" +  `row['saletype']`+ "</SaleType>\n"
+            sXml += "<Flags>" +  `row['flags']`+ "</Flags>\n"
+            sXml += "<CreationDate>" + `row['creationdate']`+ "</CreationDate>\n"
+            sXml += "</InventoryItemBase>\n"
+        sXml += "</Items>\n"    
         
         # last add user to it <UserID><Guid>fb65174f-2dde-4c1e-ba13-1a776d6864fd</Guid  >
-        sXml += "<UserID><Guid>" +args['AvatarID'][0] + "</Guid></UserID>"
+        sXml += "<UserID><Guid>" +args['AvatarID'][0] + "</Guid></UserID>\n"
         # close the xml root tag
-        sXml += "</InventoryCollection>"
+        sXml += "</InventoryCollection>\n"
         sXml = sXml.replace('&', '&amp;')
+#        sXml = sXml.replace('Ä', '&#196;')
+#        sXml = sXml.replace('Ö', '&#214;')#        sXml = sXml.replace('Ä', '&#196;')
+#        sXml = sXml.replace('Ö', '&#214;')
+#        sXml = sXml.replace('Ü', '&#220;')
+#        sXml = sXml.replace('ä', '&#228;')
+#        sXml = sXml.replace('ö', '&#246;')
+#        sXml = sXml.replace('ü', '&#252;')
+#        sXml = sXml.replace('ß', '&#223;')
 
+#        sXml = sXml.replace('Ü', '&#220;')
+#        sXml = sXml.replace('ä', '&#228;')
+#        sXml = sXml.replace('ö', '&#246;')
+#        sXml = sXml.replace('ü', '&#252;')
+#        sXml = sXml.replace('ß', '&#223;')
+        sXml = sXml.replace('\'', '&apos;')
+        
+ 
         #f= open('py3d.xml', 'wb')
         #f.write(sXml)
         #f.close()
-        print sXml
-        print 'post finish'
+        #print sXml
         #request.write(sXml)
         #request.finish()
-        print 'send all'
+        
+        
         return  sXml
-        #return
-
-
-
-
+         
+        
 
 
 #        Folders =[]
@@ -302,5 +255,7 @@ class InventoryServer(resource.Resource,  basics, gridxml,  usefullThings):
 #        #print sXml
 #        
 #        request.write(sXml)
-#        request.finish()
-#        return  NOT_DONE_YET
+       #request.finish()
+        #return  NOT_DONE_YET
+#        return request
+

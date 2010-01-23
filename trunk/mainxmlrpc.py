@@ -9,7 +9,7 @@ from databases.basics import basics
 import UserServer
 import GridServer
 import AssetServer
-import InventoryServer
+import InventoryServer6
 import databases.DB_Com
 import databases.Funcs
 

@@ -8,9 +8,8 @@ from twisted.web import server
 import mainxmlrpc    
 import databases.basics
 import sys
+import InventoryServer6
 
-from twisted.web2 import channel
-from twisted.web2 import server as server2
 # import InventoryServer
 
 #from twisted.application import service, strports
@@ -31,8 +30,9 @@ import locale, gettext
 m = mainxmlrpc.ServerData()
 u = m.getUserSite()
 g = m.getGridSite()
-a = m.getAssetSite()
+#a = m.getAssetSite()
 #i = m.getInventorySite() 
+
 #i =server2.Site( m.getInventorySite() )
 #i = server2.Site(InventoryServer.InventoryServer())
 try:    
@@ -45,9 +45,10 @@ reactor.listenTCP(baseSettings.USER_PORT + port , server.Site(u))
 
 reactor.listenTCP(baseSettings.GRID_PORT + port, server.Site(g))
 
-reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
+#reactor.listenTCP(baseSettings.ASSET_PORT + port, server.Site(a))
 
 #reactor.listenTCP(baseSettings.INVENTORY_PORT + port, server.Site(i))
+
 #reactor.listenTCP(baseSettings.INVENTORY_PORT + port, channel.HTTPFactory(i))
 
 

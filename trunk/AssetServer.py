@@ -39,8 +39,11 @@ class AssetServer(Resource,  basics, gridxml,  usefullThings):
         if pp[0] == 'assets':
             if pp[1]:
                 self.getAsset(request,  pp[1])
-    
-        #return "<html>Hello, world!</html>"
+        else:
+            return "<html>Hello, world!</html>"
+        
+    def render_POST(self, request):
+        return 'true'
         
     def getAsset(self,  request,  id):
         sSql = "SELECT data, name, assetType as type, local, temporary FROM assets WHERE id = '" + id + "'"

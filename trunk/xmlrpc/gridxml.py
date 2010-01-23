@@ -12,7 +12,9 @@ class gridxml:
         doc = impl.createDocument(None, sRoot, None)
         print doc.toxml()
         return doc
-    
+    def readXmlString(self,  sXml):    
+        return parseString(sXml)
+        
     def dic2xml(self,  doc, liParams, sTag=None):
         #print 'liParams = ',  liParams
         if sTag:
